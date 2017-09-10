@@ -57,9 +57,6 @@ public class CSender
         NetworkStream stream = netWork.GetStream();
         try
         {
-            Debug.Log("uni = " + System.Text.ASCIIEncoding.Unicode.GetByteCount(message.Message));
-            Debug.Log("ascll = " + System.Text.ASCIIEncoding.ASCII.GetByteCount(message.Message));
-
             // 보낼 byte 크기를 알아내기 위해 우선 Serialize해본다.
             byte[] messageBuffer = null;
             int sendSize = Serialize(message, ref messageBuffer);   // 보낼 문자 시리얼라이즈!
@@ -73,7 +70,7 @@ public class CSender
         catch (Exception e)
         {
             Debug.Log(e.Message);
-            message.Message = "Exception";
+            //message.Message = "Exception";
         }
     }
 

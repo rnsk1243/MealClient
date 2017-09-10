@@ -68,20 +68,15 @@ public class CListener {
                     if (curRecvedSize >= size.Number)
                         break;
                 }
-
-                //for(int i=0; i<15; i++)
-                //{
-                //    Debug.Log("messageBuffer[" + i + "] = " + messageBuffer[i]);
-                //}
-
-                //foreach(byte b in messageBuffer)
-                //{
-                //    Debug.Log("b = " + b);
-                //}
-
                 Deserialize(ref mMessage, ref messageBuffer);
 
+                System.Text.Encoding utf8 = System.Text.Encoding.UTF8;
 
+                //byte[] utf8Bytes = utf8.GetBytes(mMessage.Message);
+                //string decodedStringByUTF8 = utf8.GetString(utf8Bytes);
+
+                //byte[] byteFromStr = System.Text.Encoding.Unicode.GetBytes(mMessage.Message);
+                //string result = System.Text.Encoding.Unicode.GetString(byteFromStr);
 
                 Debug.Log("받은 메세지 = " + mMessage.Message);
                 Thread.Sleep(100);
@@ -92,7 +87,6 @@ public class CListener {
                 mMessage.Message = "Exception";
                 Debug.Log("Listen스레드 종료중..");
                 mThreadListen.Abort();
-                Debug.Log("Listen스레드 종료완료");
             }
         }
     }
