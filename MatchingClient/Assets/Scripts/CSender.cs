@@ -8,6 +8,20 @@ using System;
 
 public class CSender
 {
+    private static CSender mInstance;
+    
+    private CSender(){}
+
+    public static CSender GetInstance()
+    {
+        if(null == mInstance)
+        {
+            Debug.Log("Sender 객체 생성");
+            mInstance = new CSender();
+        }
+        return mInstance;
+    }
+
     void Serialize(DataPacketInt targetStruct, ref byte[] data)
     {
         // allocate a byte array for the struct data
@@ -61,10 +75,10 @@ public class CSender
             byte[] messageBuffer = null;
             int sendSize = Serialize(message, ref messageBuffer);   // 보낼 문자 시리얼라이즈!
             // 보낼 크기 저장 buffer준비
-            byte[] sizeBuffer = new byte[ConstVaue.IntSize];
+            byte[] sizeBuffer = new byte[ConstValue.IntSize];
             DataPacketInt size = new DataPacketInt(sendSize); // 보낼 크기 구조체에 담고
             Serialize(size, ref sizeBuffer);    // 보낼 크기 시리얼라이즈!
-            stream.Write(sizeBuffer, 0, ConstVaue.IntSize);
+            stream.Write(sizeBuffer, 0, ConstValue.IntSize);
             stream.Write(messageBuffer, 0, sendSize);
         }
         catch (Exception e)
@@ -73,6 +87,4 @@ public class CSender
             //message.Message = "Exception";
         }
     }
-
-
 }

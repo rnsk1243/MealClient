@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace ConstValueInfo
 {
-    public class ConstVaue
+    public class ConstValue
     {
         public const int Port = 9000;
         public const string IP = "127.0.0.1";

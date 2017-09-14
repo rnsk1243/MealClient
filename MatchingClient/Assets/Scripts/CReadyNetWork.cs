@@ -89,7 +89,7 @@ using ConstValueInfo;
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 public struct DataPacketInt
 {
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = ConstVaue.IntSize)]
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = ConstValue.IntSize)]
     public int Number;
 
     public DataPacketInt(int number)
@@ -119,7 +119,7 @@ public struct DataPacketInt
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
 public struct DataPacketString
 {
-    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = ConstVaue.BufSize)]
+    [MarshalAs(UnmanagedType.ByValTStr, SizeConst = ConstValue.BufSize)]
     public string Message;
 
     public DataPacketString(string message)
@@ -154,11 +154,12 @@ public class CReadyNetWork
     private CReadyNetWork()
     {
         mClient = new TcpClient();
-        mClient.Connect(ConstVaue.IP, ConstVaue.Port);
+        mClient.Connect(ConstValue.IP, ConstValue.Port);
         mStream = mClient.GetStream();
     }
     ~CReadyNetWork()
     {
+        UnityEngine.Debug.Log("CReadyNetWork 소멸자 호출");
         mStream.Close();
         mClient.Close();
     }
@@ -171,9 +172,26 @@ public class CReadyNetWork
         return mInstance;
     }
     
+    public bool IsConnected()
+    {
+        return mClient.Connected;
+    }
+
     public NetworkStream GetStream()
     {
         return mStream;
+    }
+
+    public void CloseStream()
+    {
+        UnityEngine.Debug.Log("mStream Close() 호출");
+        mStream.Close();
+    }
+
+    public void CloseClient()
+    {
+        UnityEngine.Debug.Log("mClient Close() 호출");
+        mClient.Close();
     }
 
 }
