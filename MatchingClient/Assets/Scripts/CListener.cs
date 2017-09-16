@@ -11,18 +11,17 @@ public class CListener {
 
     private static CListener mInstance;
     private Thread mThreadListen;
-    private DataPacketString mMessage;
     private NetworkStream mStream;
     private CReadyNetWork mNetWork;
-
     private Queue<string> mRecvMessage;
+
+    ///
 
     private CListener()
     {
         mRecvMessage = new Queue<string>();
         mNetWork = CReadyNetWork.GetInstance();
         mStream = mNetWork.GetStream();
-        mMessage = new DataPacketString();
         mThreadListen = new Thread(new ThreadStart(Listen));
         Debug.Log("listen 시작");
         mThreadListen.Start();
@@ -38,7 +37,6 @@ public class CListener {
     {
         Debug.Log("mThreadListen 종료 호출");
         mThreadListen.Abort();
-        Debug.Log("mThreadListen 종료 완료");
     }
 
     public static CListener GetInstance()
@@ -85,7 +83,7 @@ public class CListener {
                     Debug.Log("연결 끊김 Listen스레드 종료중..");
                     mThreadListen.Abort();
                 }
-
+                DataPacketString mMessage = new DataPacketString();
                 mMessage.Message = "";
                 byte[] sizeBuffer = new byte[ConstValue.IntSize];
                 int isSuccess = mStream.Read(sizeBuffer, 0, ConstValue.IntSize);
@@ -119,7 +117,6 @@ public class CListener {
             catch (Exception e)
             {
                 Debug.Log(e.Message);
-                mMessage.Message = "Exception";
                 Debug.Log("Listen스레드 종료중..");
                 mThreadListen.Abort();
             }
