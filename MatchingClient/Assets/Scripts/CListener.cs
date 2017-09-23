@@ -124,9 +124,17 @@ public class CListener {
             case (int)ProtocolInfo.ChattingMessage:
                 mRecvMessage.Enqueue(new DataChatMessage((ProtocolDetail)dataPacket.InfoProtocolDetail, dataPacket.InfoValue));
                 break;
-            case (int)ProtocolInfo.PlayerInfo:
-                mRecvMatchInfoQueue.Enqueue(new DataMatchInfo((ProtocolDetail)dataPacket.InfoProtocolDetail, (ProtocolCharacterTagIndex)dataPacket.InfoTagNumber, dataPacket.InfoValue));
-                Debug.Log("플레이어 정보 받음 dataPacket.InfoProtocolDetail = " + dataPacket.InfoProtocolDetail);
+            case (int)ProtocolInfo.ClientCommend:
+                switch(dataPacket.InfoProtocolDetail)
+                {
+                    case (int)ProtocolDetail.ImageChange:
+                    case (int)ProtocolDetail.NameChange:
+                        mRecvMatchInfoQueue.Enqueue(new DataMatchInfo((ProtocolDetail)dataPacket.InfoProtocolDetail, (ProtocolCharacterTagIndex)dataPacket.InfoTagNumber, dataPacket.InfoValue));
+                        break;
+                    case (int)ProtocolDetail.MatchingSuccess:
+                        CheckState.ChangeState(ProtocolSceneName.RoomScene);
+                        break;
+                }
                 break;
             default:
                 Debug.Log("분류 할 수 없는 enum ProtocolInfo에 등록 되어 있지 않음");

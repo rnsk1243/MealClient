@@ -73,11 +73,11 @@
     <Reference Include="UnityEditor">
       <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
-    <Reference Include="I18N">
-      <HintPath>Assets\Plugins\I18N.dll</HintPath>
-    </Reference>
     <Reference Include="I18N.CJK">
       <HintPath>Assets\Plugins\I18N.CJK.dll</HintPath>
+    </Reference>
+    <Reference Include="I18N">
+      <HintPath>Assets\Plugins\I18N.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -85,7 +85,9 @@
     <Compile Include="Assets\Scripts\CReadyNetWork.cs" />
     <Compile Include="Assets\Scripts\CSender.cs" />
     <Compile Include="Assets\Scripts\Chatting.cs" />
+    <Compile Include="Assets\Scripts\CheckState.cs" />
     <Compile Include="Assets\Scripts\ConstValueInfo.cs" />
+    <Compile Include="Assets\Scripts\Front.cs" />
     <Compile Include="Assets\Scripts\Init.cs" />
     <Compile Include="Assets\Scripts\Matching.cs" />
     <Compile Include="Assets\Scripts\StructData.cs" />

@@ -6,11 +6,17 @@ public class Init : MonoBehaviour {
 
     // Use this for initialization
     CReadyNetWork readyNetWork;
-    
+
+
     void Awake () {
+        DontDestroyOnLoad(this.gameObject);
         Debug.Log("Init시작");
         readyNetWork = CReadyNetWork.GetInstance();
     }
+
+    //void Update()
+    //{
+    //}
 
     private void OnApplicationQuit()
     {
@@ -21,3 +27,4 @@ public class Init : MonoBehaviour {
     }
 
 }
+

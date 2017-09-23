@@ -16,17 +16,17 @@ public class Matching : MonoBehaviour {
     List<Transform> mPlayerImageInfoList;
     List<Transform> mPlayerNameInfoList;
 
-    Texture[] mTextureArray;
+    Texture[] mCharacterTextureArray; // 캐릭터 이미지 텍스쳐 보관
     
 
 
     void Awake()
     {
         mListener = CListener.GetInstance();
-        mTextureArray = new Texture[ConstValue.CharacterKind];
-        mTextureArray[(int)ProtocolCharacter.Tofu] = mTofu;
-        mTextureArray[(int)ProtocolCharacter.Mandu] = mMandu;
-        mTextureArray[(int)ProtocolCharacter.Tangsuyuk] = mTangsuyuk;
+        mCharacterTextureArray = new Texture[ConstValue.CharacterKind];
+        mCharacterTextureArray[(int)ProtocolCharacterImageName.Tofu] = mTofu;
+        mCharacterTextureArray[(int)ProtocolCharacterImageName.Mandu] = mMandu;
+        mCharacterTextureArray[(int)ProtocolCharacterImageName.Tangsuyuk] = mTangsuyuk;
         mPlayerInfo = new List<GameObject>();
         mPlayerImageInfoList = new List<Transform>();
         mPlayerNameInfoList = new List<Transform>();
@@ -54,10 +54,10 @@ public class Matching : MonoBehaviour {
         {
             switch (dataInfo.DataInfo)
             {
-                case ProtocolDetail.Image:
+                case ProtocolDetail.ImageChange:
                     UpdateImage(dataInfo.DataTagNumber, dataInfo.DataValue);
                     break;
-                case ProtocolDetail.Name:
+                case ProtocolDetail.NameChange:
                     UpdateName(dataInfo.DataTagNumber, dataInfo.DataValue);
                     break;
                 default:
@@ -95,29 +95,16 @@ public class Matching : MonoBehaviour {
 
     bool UpdateImage(ProtocolCharacterTagIndex tagIndex, string imageProtocol)
     {
-        Transform targetTr = SearchTargetPlayerImage(ConstValue.CharacterImageTag[(int)tagIndex]);
+        Transform targetTr = SearchTargetPlayerImage(ConstValue.ProtocolCharacterTagIndexImage[(int)tagIndex]);
         if(targetTr != null)
         {
             int index = 0;
-            foreach(string name in ConstValue.CharacterImageName)
-            {   // 이름이 일치하고 배열 범위를 벗어나지 않으면 
-                for(int i=0; i<name.Length; ++i)
-                {
-                    Debug.Log("name[" + i + "] = " + name[i]);
-                }
-                for (int i = 0; i < imageProtocol.Length; ++i)
-                {
-                    Debug.Log("imageProtocol[" + i + "] = " + imageProtocol[i]);
-                }
-
-                //Debug.Log("imageProtocol = " + imageProtocol);
-                //Debug.Log("name = " + name);
-                //Debug.Log("imageProtocol == name == " + string.Equals(imageProtocol, name, System.StringComparison.OrdinalIgnoreCase));
-                //Debug.Log("((mTextureArray.Length - 1) >= index) = " + ((mTextureArray.Length - 1) >= index));
-                if (imageProtocol == name && ((mTextureArray.Length - 1) >= index))
+            foreach(string name in ConstValue.ProtocolCharacterImageName)
+            {   // 서버에서 받은 캐릭터이미지(imageProtocol)와 프로토콜 이름(name)이 일치하고 배열 범위를 벗어나지 않으면 
+                if (imageProtocol == name && ((mCharacterTextureArray.Length - 1) >= index))
                 {
                     Debug.Log("이미지 변경 = " + imageProtocol);
-                    targetTr.GetComponent<RawImage>().texture = mTextureArray[index];
+                    targetTr.GetComponent<RawImage>().texture = mCharacterTextureArray[index];
                     return true;
                 }
                 ++index;
@@ -126,7 +113,7 @@ public class Matching : MonoBehaviour {
         }
         else
         {
-            Debug.Log(ConstValue.CharacterImageTag[(int)tagIndex] + " 이름의 tag를 찾지 못함");
+            Debug.Log(ConstValue.ProtocolCharacterTagIndexImage[(int)tagIndex] + " 이름의 tag를 찾지 못함");
         }
 
         return false;
@@ -134,7 +121,7 @@ public class Matching : MonoBehaviour {
 
     void UpdateName(ProtocolCharacterTagIndex tagIndex, string name)
     {
-        Transform targetTr = SearchTargetPlayerName(ConstValue.CharacterNameTag[(int)tagIndex]);
+        Transform targetTr = SearchTargetPlayerName(ConstValue.ProtocolCharacterTagIndexName[(int)tagIndex]);
         if(targetTr != null)
         {
             targetTr.GetComponent<Text>().text = name;

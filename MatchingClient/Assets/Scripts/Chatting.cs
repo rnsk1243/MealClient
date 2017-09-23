@@ -28,7 +28,7 @@ public class Chatting : MonoBehaviour {
         mSender = CSender.GetInstance();
         mListener = CListener.GetInstance();
         mInputFieldObj = GameObject.FindGameObjectWithTag("TextInput");
-        mViewPort = GameObject.FindGameObjectWithTag(ConstValue.MessageTag[(int)ProtocolMessageTag.Text]);
+        mViewPort = GameObject.FindGameObjectWithTag(ConstValue.ProtocolMessageTag[(int)ProtocolMessageTag.Text]);
         mInputComponent = mInputFieldObj.GetComponent<InputField>();
         mInputComponent.text = "";
         mRectTransform = mViewPort.GetComponent<RectTransform>();
