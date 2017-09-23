@@ -13,13 +13,14 @@ public class CListener {
     private Thread mThreadListen;
     private NetworkStream mStream;
     private CReadyNetWork mNetWork;
-    private Queue<string> mRecvMessage;
-
+    private Queue<DataChatMessage> mRecvMessage;
+    private Queue<DataMatchInfo> mRecvMatchInfoQueue;
     ///
 
     private CListener()
     {
-        mRecvMessage = new Queue<string>();
+        mRecvMessage = new Queue<DataChatMessage>();
+        mRecvMatchInfoQueue = new Queue<DataMatchInfo>();
         mNetWork = CReadyNetWork.GetInstance();
         mStream = mNetWork.GetStream();
         mThreadListen = new Thread(new ThreadStart(Listen));
@@ -49,7 +50,7 @@ public class CListener {
         return mInstance;
     }
 
-    public string GetRecvMessage()
+    public DataChatMessage GetRecvMessage()
     {
         if(0 != mRecvMessage.Count)
         {
@@ -58,19 +59,17 @@ public class CListener {
         return null;
     }
 
-    void Deserialize<T>(ref T outTemp, ref byte[] data)
+    public DataMatchInfo GetRecvDataMatchInfo()
     {
-        //int RawSize = Marshal.SizeOf(outTemp);
-        //IntPtr buffer = Marshal.AllocHGlobal(RawSize);
-        //Marshal.Copy(data, 0, buffer, RawSize);
-        //object retobj = Marshal.PtrToStructure(buffer, typeof(T));
-        //Marshal.FreeHGlobal(buffer);
-        //outTemp = (T)retobj;
-
-        var gch = GCHandle.Alloc(data, GCHandleType.Pinned);
-        outTemp = (T)Marshal.PtrToStructure(gch.AddrOfPinnedObject(), typeof(T));
-        gch.Free();
+        if(0 != mRecvMatchInfoQueue.Count)
+        {
+            Debug.Log("플레이어 정보 꺼냄");
+            return mRecvMatchInfoQueue.Dequeue();
+        }
+        return null;
     }
+
+  
 
     public void Listen()
     {
@@ -83,25 +82,21 @@ public class CListener {
                     Debug.Log("연결 끊김 Listen스레드 종료중..");
                     mThreadListen.Abort();
                 }
-                DataPacketString mMessage = new DataPacketString();
-                mMessage.Message = "";
-                byte[] sizeBuffer = new byte[ConstValue.IntSize];
-                int isSuccess = mStream.Read(sizeBuffer, 0, ConstValue.IntSize);
 
-                DataPacketInt size = new DataPacketInt();
-                Deserialize(ref size, ref sizeBuffer);
-
-                byte[] messageBuffer = new byte[ConstValue.BufSize];
+                byte[] dataBuffer = new byte[ConstValue.BufSizeRecv];
+                int goalSize = Marshal.SizeOf(typeof(DataPacketInfo));
+                //Debug.Log("받을 목표 사이즈 = " + goalSize);
                 int curRecvedSize = 0;
-                Debug.Log("받을 size = " + size.Number);
-                while (size.Number > 0)
+                while (true)
                 {
-                    curRecvedSize += mStream.Read(messageBuffer, 0, size.Number);
-                    if (curRecvedSize >= size.Number)
+                    curRecvedSize += mStream.Read(dataBuffer, 0, goalSize);
+                    if (curRecvedSize >= goalSize)
+                    {
                         break;
+                    }
                 }
-                Deserialize(ref mMessage, ref messageBuffer);
-
+                DataPacketInfo dataPacket = new DataPacketInfo();
+                dataPacket.Deserialize(ref dataBuffer);
                 //System.Text.Encoding utf8 = System.Text.Encoding.UTF8;
 
                 //byte[] utf8Bytes = utf8.GetBytes(mMessage.Message);
@@ -109,9 +104,8 @@ public class CListener {
 
                 //byte[] byteFromStr = System.Text.Encoding.Unicode.GetBytes(mMessage.Message);
                 //string result = System.Text.Encoding.Unicode.GetString(byteFromStr);
-
-                Debug.Log("받은 메세지 = " + mMessage.Message);
-                mRecvMessage.Enqueue(mMessage.Message);
+                
+                DataCategorize(ref dataPacket);
                 Thread.Sleep(100);
             }
             catch (Exception e)
@@ -120,6 +114,23 @@ public class CListener {
                 Debug.Log("Listen스레드 종료중..");
                 mThreadListen.Abort();
             }
+        }
+    }
+
+    void DataCategorize(ref DataPacketInfo dataPacket)
+    {
+        switch(dataPacket.InfoProtocol)
+        {
+            case (int)ProtocolInfo.ChattingMessage:
+                mRecvMessage.Enqueue(new DataChatMessage((ProtocolDetail)dataPacket.InfoProtocolDetail, dataPacket.InfoValue));
+                break;
+            case (int)ProtocolInfo.PlayerInfo:
+                mRecvMatchInfoQueue.Enqueue(new DataMatchInfo((ProtocolDetail)dataPacket.InfoProtocolDetail, (ProtocolCharacterTagIndex)dataPacket.InfoTagNumber, dataPacket.InfoValue));
+                Debug.Log("플레이어 정보 받음 dataPacket.InfoProtocolDetail = " + dataPacket.InfoProtocolDetail);
+                break;
+            default:
+                Debug.Log("분류 할 수 없는 enum ProtocolInfo에 등록 되어 있지 않음");
+                break;
         }
     }
 

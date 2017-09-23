@@ -10,8 +10,8 @@ public class Matching : MonoBehaviour {
     public Texture mTofu;
     public Texture mMandu;
     public Texture mTangsuyuk;
+    CListener mListener;
 
-    List<DataPacketPlayerInfo> mMatchInfoList;
     List<GameObject> mPlayerInfo;
     List<Transform> mPlayerImageInfoList;
     List<Transform> mPlayerNameInfoList;
@@ -20,13 +20,13 @@ public class Matching : MonoBehaviour {
     
 
 
-    void Start()
+    void Awake()
     {
+        mListener = CListener.GetInstance();
         mTextureArray = new Texture[ConstValue.CharacterKind];
         mTextureArray[(int)ProtocolCharacter.Tofu] = mTofu;
         mTextureArray[(int)ProtocolCharacter.Mandu] = mMandu;
         mTextureArray[(int)ProtocolCharacter.Tangsuyuk] = mTangsuyuk;
-        mMatchInfoList = new List<DataPacketPlayerInfo>();
         mPlayerInfo = new List<GameObject>();
         mPlayerImageInfoList = new List<Transform>();
         mPlayerNameInfoList = new List<Transform>();
@@ -39,51 +39,32 @@ public class Matching : MonoBehaviour {
             mPlayerImageInfoList.Add(g.transform.FindChild("Image"));
             mPlayerNameInfoList.Add(g.transform.FindChild("Name"));
         }
-        //
-        mMatchInfoList.Add(new DataPacketPlayerInfo((int)ProtocolImageName.Image, "RedImage01", "Tofu"));
-        mMatchInfoList.Add(new DataPacketPlayerInfo((int)ProtocolImageName.Name, "RedName01", "M37"));
-        mMatchInfoList.Add(new DataPacketPlayerInfo((int)ProtocolImageName.Image, "RedImage02", "Mandu"));
-        mMatchInfoList.Add(new DataPacketPlayerInfo((int)ProtocolImageName.Name, "RedName02", "리엔필드"));
-        mMatchInfoList.Add(new DataPacketPlayerInfo((int)ProtocolImageName.Image, "RedImage03", "Tangsuyuk"));
-        mMatchInfoList.Add(new DataPacketPlayerInfo((int)ProtocolImageName.Name, "RedName03", "그로자"));
-        mMatchInfoList.Add(new DataPacketPlayerInfo((int)ProtocolImageName.Image, "BlueImage01", "Tangsuyuk"));
-        mMatchInfoList.Add(new DataPacketPlayerInfo((int)ProtocolImageName.Name, "BlueName01", "파업찐"));
-        mMatchInfoList.Add(new DataPacketPlayerInfo((int)ProtocolImageName.Image, "BlueImage02", "Tofu"));
-        mMatchInfoList.Add(new DataPacketPlayerInfo((int)ProtocolImageName.Name, "BlueName02", "꼬접충"));
-        mMatchInfoList.Add(new DataPacketPlayerInfo((int)ProtocolImageName.Image, "BlueImage03", "Mandu"));
-        mMatchInfoList.Add(new DataPacketPlayerInfo((int)ProtocolImageName.Name, "BlueName03", "쪼꼬바"));
-        //
     }
 
     void Update()
     {
         // 리스트에 정보가 있으면 적용 함수 호출
-        if(mMatchInfoList.Count != 0)
-        {
-            UpdatePlayerInfo();
-        }
-    }
-
-    public void PushMatchingInfo(ref DataPacketPlayerInfo info)
-    {
-        mMatchInfoList.Add(info);
+        UpdatePlayerInfo();
     }
 
     void UpdatePlayerInfo()
     {
-        foreach(DataPacketPlayerInfo dataInfo in mMatchInfoList)
+        DataMatchInfo dataInfo = mListener.GetRecvDataMatchInfo();
+        if(dataInfo != null)
         {
-            switch(dataInfo.InfoProtocol)
+            switch (dataInfo.DataInfo)
             {
-                case (int)ProtocolImageName.Image:
-                    UpdateImage(dataInfo.InfoTag, dataInfo.InfoValue);
+                case ProtocolDetail.Image:
+                    UpdateImage(dataInfo.DataTagNumber, dataInfo.DataValue);
                     break;
-                case (int)ProtocolImageName.Name:
-                    UpdateName(dataInfo.InfoTag, dataInfo.InfoValue);
+                case ProtocolDetail.Name:
+                    UpdateName(dataInfo.DataTagNumber, dataInfo.DataValue);
+                    break;
+                default:
+                    Debug.Log("이상한거 받음 = dataInfo.DataInfo = " + dataInfo.DataInfo + "// dataInfo.DataTagNumber = " + dataInfo.DataTagNumber + " // dataInfo.DataValue = " + dataInfo.DataValue);
                     break;
             }
         }
-        mMatchInfoList.RemoveRange(0, mMatchInfoList.Count);
     }
 
     Transform SearchTargetPlayerImage(string tag)
@@ -108,19 +89,32 @@ public class Matching : MonoBehaviour {
                 return tr;
             }
         }
-        Debug.Log("tag = " + tag + " 와 일치하는 Name 못 찾음");
+        Debug.Log("tag = " + tag + " 와 일치하는 Player Name 객체 못 찾음");
         return null;
     }
 
-    bool UpdateImage(string tag, string imageProtocol)
+    bool UpdateImage(ProtocolCharacterTagIndex tagIndex, string imageProtocol)
     {
-        Transform targetTr = SearchTargetPlayerImage(tag);
+        Transform targetTr = SearchTargetPlayerImage(ConstValue.CharacterImageTag[(int)tagIndex]);
         if(targetTr != null)
         {
             int index = 0;
-            foreach(string name in ConstValue.CharacterName)
+            foreach(string name in ConstValue.CharacterImageName)
             {   // 이름이 일치하고 배열 범위를 벗어나지 않으면 
-                if(imageProtocol == name && ((mTextureArray.Length - 1) >= index))
+                for(int i=0; i<name.Length; ++i)
+                {
+                    Debug.Log("name[" + i + "] = " + name[i]);
+                }
+                for (int i = 0; i < imageProtocol.Length; ++i)
+                {
+                    Debug.Log("imageProtocol[" + i + "] = " + imageProtocol[i]);
+                }
+
+                //Debug.Log("imageProtocol = " + imageProtocol);
+                //Debug.Log("name = " + name);
+                //Debug.Log("imageProtocol == name == " + string.Equals(imageProtocol, name, System.StringComparison.OrdinalIgnoreCase));
+                //Debug.Log("((mTextureArray.Length - 1) >= index) = " + ((mTextureArray.Length - 1) >= index));
+                if (imageProtocol == name && ((mTextureArray.Length - 1) >= index))
                 {
                     Debug.Log("이미지 변경 = " + imageProtocol);
                     targetTr.GetComponent<RawImage>().texture = mTextureArray[index];
@@ -128,13 +122,19 @@ public class Matching : MonoBehaviour {
                 }
                 ++index;
             }
+            Debug.Log("전부 일치 하지 않음");
         }
+        else
+        {
+            Debug.Log(ConstValue.CharacterImageTag[(int)tagIndex] + " 이름의 tag를 찾지 못함");
+        }
+
         return false;
     }
 
-    void UpdateName(string tag, string name)
+    void UpdateName(ProtocolCharacterTagIndex tagIndex, string name)
     {
-        Transform targetTr = SearchTargetPlayerName(tag);
+        Transform targetTr = SearchTargetPlayerName(ConstValue.CharacterNameTag[(int)tagIndex]);
         if(targetTr != null)
         {
             targetTr.GetComponent<Text>().text = name;
