@@ -31,8 +31,9 @@ namespace ConstValueInfo
         MakeRoom,
         OutRoom,
         ReadyGame,           // 게임준비
-        Login,
-        MatchingSuccess     // 매칭 성공 방 UI 표시
+        FrontMenu,          // 메뉴(로그인, 회원가입, 게스트 로그인 )
+        MatchingSuccess,     // 매칭 성공 방 UI 표시
+        LoginSuccess         // 로그인 성공 채널 입장
     }
 
 
@@ -59,8 +60,15 @@ namespace ConstValueInfo
 
     public enum ProtocolSceneName
     {
-        FrontScene, RoomScene
+        FrontScene, ChannelScene, RoomScene
     }
+
+    public enum State
+    {
+        ClientNone, ClientFrontMenu, ClientJoin, ClientChannelMenu, ClientMatching,
+        ClientMakeRoom, ClientOption, ClientRoomIn
+    }
+
     //enum ProtocolTeam
     //{
     //    Red, Blue
@@ -79,7 +87,7 @@ namespace ConstValueInfo
         public static readonly string[] ProtocolCharacterTagIndexImage = { "RedImage01", "RedImage02", "RedImage03", "BlueImage01", "BlueImage02", "BlueImage03" };
         public static readonly string[] ProtocolCharacterTagIndexName = { "RedName01", "RedName02", "RedName03", "BlueName01", "BlueName02", "BlueName03" };
         public static readonly string[] ProtocolMessageTag = { "TextView" };
-        public static readonly string[] ProtocolSceneName = { "FrontScene", "RoomScene" };
+        public static readonly string[] ProtocolSceneName = { "FrontScene", "ChannelScene", "RoomScene" };
         public const int CharacterKind = 3;
     }
 }

@@ -5,7 +5,7 @@ using ConstValueInfo;
 using UnityEngine.UI;
 
 
-public class Matching : MonoBehaviour {
+public class TeamPanel : MonoBehaviour {
 
     public Texture mTofu;
     public Texture mMandu;

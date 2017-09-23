@@ -132,7 +132,15 @@ public class CListener {
                         mRecvMatchInfoQueue.Enqueue(new DataMatchInfo((ProtocolDetail)dataPacket.InfoProtocolDetail, (ProtocolCharacterTagIndex)dataPacket.InfoTagNumber, dataPacket.InfoValue));
                         break;
                     case (int)ProtocolDetail.MatchingSuccess:
-                        CheckState.ChangeState(ProtocolSceneName.RoomScene);
+                        CheckState.ChangeSceneState(ProtocolSceneName.RoomScene);
+                        CheckState.ChangeState(State.ClientRoomIn);
+                        break;
+                    case (int)ProtocolDetail.LoginSuccess:
+                        CheckState.ChangeSceneState(ProtocolSceneName.ChannelScene);
+                        CheckState.ChangeState(State.ClientChannelMenu);// 채널 메뉴
+                        break;
+                    default:
+                        Debug.Log("분류 할 수 없는 enum InfoProtocolDetail에 등록 되어 있지 않음");
                         break;
                 }
                 break;
