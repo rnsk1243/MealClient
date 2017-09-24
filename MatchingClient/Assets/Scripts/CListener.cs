@@ -129,6 +129,7 @@ public class CListener {
                 {
                     case (int)ProtocolDetail.ImageChange:
                     case (int)ProtocolDetail.NameChange:
+                        Debug.Log("(ProtocolCharacterTagIndex)dataPacket.InfoTagNumber = " + (ProtocolCharacterTagIndex)dataPacket.InfoTagNumber);
                         mRecvMatchInfoQueue.Enqueue(new DataMatchInfo((ProtocolDetail)dataPacket.InfoProtocolDetail, (ProtocolCharacterTagIndex)dataPacket.InfoTagNumber, dataPacket.InfoValue));
                         break;
                     case (int)ProtocolDetail.MatchingSuccess:

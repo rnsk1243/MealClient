@@ -41,7 +41,7 @@ public class Front : MonoBehaviour {
         {
             string idpw = id + '/' + pw;
             Debug.Log("idpw = " + idpw);
-            DataPacketInfo dataIDPWString = new DataPacketInfo((int)ProtocolInfo.ServerCommend, (int)ProtocolDetail.FrontMenu, (int)ProtocolFrontManuTag.LoginManu, idpw);
+            DataPacketInfo dataIDPWString = new DataPacketInfo((int)ProtocolInfo.ServerCommend, (int)ProtocolDetail.FrontMenu, (int)ProtocolFrontMenuTag.LoginMenu, idpw);
             mSender.Sendn(ref dataIDPWString);
         }
         else

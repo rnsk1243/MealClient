@@ -95,6 +95,7 @@ public class TeamPanel : MonoBehaviour {
 
     bool UpdateImage(ProtocolCharacterTagIndex tagIndex, string imageProtocol)
     {
+        Debug.Log("변경 위치 = " + tagIndex);
         Transform targetTr = SearchTargetPlayerImage(ConstValue.ProtocolCharacterTagIndexImage[(int)tagIndex]);
         if(targetTr != null)
         {
@@ -124,6 +125,7 @@ public class TeamPanel : MonoBehaviour {
         Transform targetTr = SearchTargetPlayerName(ConstValue.ProtocolCharacterTagIndexName[(int)tagIndex]);
         if(targetTr != null)
         {
+            Debug.Log("이름 변경 = " + name);
             targetTr.GetComponent<Text>().text = name;
         }
     }

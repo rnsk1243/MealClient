@@ -53,10 +53,11 @@ namespace ConstValueInfo
         Text
     }
 
-    public enum ProtocolFrontManuTag
+    public enum ProtocolFrontMenuTag
     {
-        LoginManu, JoinManu, GuestManu, CancleManu
+        LoginMenu, JoinMenu, GuestMenu, CancleMenu
     }
+
 
     public enum ProtocolSceneName
     {

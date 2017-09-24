@@ -6,12 +6,13 @@ using ConstValueInfo;
 
 public class Channel : MonoBehaviour {
 
-    GameObject mMatchingPanel;
-
-	// Use this for initialization
-	void Awake () {
-        mMatchingPanel = GameObject.FindGameObjectWithTag("MatchingPanel");
-	}
+    //GameObject mMatchingPanel;
+    CSender mSender;
+    // Use this for initialization
+    void Awake () {
+        //mMatchingPanel = GameObject.FindGameObjectWithTag("MatchingPanel");
+        mSender = CSender.GetInstance();
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -22,6 +23,8 @@ public class Channel : MonoBehaviour {
     {
         Debug.Log("매칭 중...");
         CheckState.ChangeState(State.ClientMatching);
+        DataPacketInfo dataEnterRoom = new DataPacketInfo((int)ProtocolInfo.ServerCommend, (int)ProtocolDetail.EnterRoom, (int)State.ClientMatching, null);
+        mSender.Sendn(ref dataEnterRoom);
     }
 
     public void CancleMatching()
