@@ -24,9 +24,9 @@ public class TeamPanel : MonoBehaviour {
     {
         mListener = CListener.GetInstance();
         mCharacterTextureArray = new Texture[ConstValue.CharacterKind];
-        mCharacterTextureArray[(int)ProtocolCharacterImageName.Tofu] = mTofu;
-        mCharacterTextureArray[(int)ProtocolCharacterImageName.Mandu] = mMandu;
-        mCharacterTextureArray[(int)ProtocolCharacterImageName.Tangsuyuk] = mTangsuyuk;
+        mCharacterTextureArray[(int)ProtocolCharacterImageNameIndex.Tofu] = mTofu;
+        mCharacterTextureArray[(int)ProtocolCharacterImageNameIndex.Mandu] = mMandu;
+        mCharacterTextureArray[(int)ProtocolCharacterImageNameIndex.Tangsuyuk] = mTangsuyuk;
         mPlayerInfo = new List<GameObject>();
         mPlayerImageInfoList = new List<Transform>();
         mPlayerNameInfoList = new List<Transform>();

@@ -30,14 +30,16 @@ namespace ConstValueInfo
         EnterChanel,
         MakeRoom,
         OutRoom,
-        ReadyGame,           // 게임준비
+        SetReadyGame,           // 게임준비
         FrontMenu,          // 메뉴(로그인, 회원가입, 게스트 로그인 )
         MatchingSuccess,     // 매칭 성공 방 UI 표시
-        LoginSuccess         // 로그인 성공 채널 입장
+        LoginSuccess,         // 로그인 성공 채널 입장
+        ChangeCharacter,		// 캐릭터 변경
+        NotReadyGame        // 게임 준비 취소
     }
 
 
-    public enum ProtocolCharacterImageName
+    public enum ProtocolCharacterImageNameIndex
     {
         Tofu, Mandu, Tangsuyuk
     }
@@ -45,7 +47,7 @@ namespace ConstValueInfo
     // 이후 밑으로는 대상 Tag 인덱스 
     public enum ProtocolCharacterTagIndex   // CharacterImageTag 배열과 CharacterNameTag 배열의 인덱스
     {
-        Red01, Red02, Red03, Blue01, Blue02, Blue03
+        None, Red01, Red02, Red03, Blue01, Blue02, Blue03
     }
 
     public enum ProtocolMessageTag
@@ -67,7 +69,7 @@ namespace ConstValueInfo
     public enum State
     {
         ClientNone, ClientFrontMenu, ClientJoin, ClientChannelMenu, ClientMatching,
-        ClientMakeRoom, ClientOption, ClientRoomIn
+        ClientMakeRoom, ClientOption, ClientRoomIn, ClientReady, ClientNotReady
     }
 
     //enum ProtocolTeam

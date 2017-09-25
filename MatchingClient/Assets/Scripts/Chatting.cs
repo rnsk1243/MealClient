@@ -21,7 +21,6 @@ public class Chatting : MonoBehaviour {
     List<String> DialogueRecord;
 
     int mLimitDialogueWindow;  // 몇줄까지 나타내는지 
-    
 
     void Awake ()
     {
@@ -29,11 +28,16 @@ public class Chatting : MonoBehaviour {
         mListener = CListener.GetInstance();
         mInputFieldObj = GameObject.FindGameObjectWithTag("TextInput");
         mViewPort = GameObject.FindGameObjectWithTag(ConstValue.ProtocolMessageTag[(int)ProtocolMessageTag.Text]);
+        
         mInputComponent = mInputFieldObj.GetComponent<InputField>();
         mInputComponent.text = "";
         mRectTransform = mViewPort.GetComponent<RectTransform>();
+        mRectTransform.position.Set(0, 0, 0);
         mText = mViewPort.GetComponent<Text>();
-        mLimitDialogueWindow = (int)(mRectTransform.position.y / 30);
+        mRectTransform.sizeDelta = new Vector2(0, 2200);
+        Debug.Log("mRectTransform.sizeDelta.y = " + mRectTransform.sizeDelta.y);
+        mLimitDialogueWindow = (int)(mRectTransform.sizeDelta.y / 30);
+        Debug.Log("mLimitDialogueWindow = " + mLimitDialogueWindow);
         DialogueRecordInit();
     }
 	
@@ -42,6 +46,7 @@ public class Chatting : MonoBehaviour {
         DialogueRecord = new List<string>();
         for (int i=0; i< mLimitDialogueWindow; ++i)
         {
+            Debug.Log("d");
             DialogueRecord.Add(" ");
         }
     }

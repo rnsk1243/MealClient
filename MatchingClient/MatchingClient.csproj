@@ -84,6 +84,7 @@
     <Compile Include="Assets\Scripts\CListener.cs" />
     <Compile Include="Assets\Scripts\CReadyNetWork.cs" />
     <Compile Include="Assets\Scripts\CSender.cs" />
+    <Compile Include="Assets\Scripts\ChangeCharacter.cs" />
     <Compile Include="Assets\Scripts\Channel.cs" />
     <Compile Include="Assets\Scripts\Chatting.cs" />
     <Compile Include="Assets\Scripts\CheckState.cs" />

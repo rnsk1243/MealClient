@@ -59,6 +59,11 @@ public class CheckState : MonoBehaviour {
         //ActiveObject(state);
     }
 
+    public static State GetCurState()
+    {
+        return mCurrentState;
+    }
+
     void Update()
     {
 
@@ -105,6 +110,9 @@ public class CheckState : MonoBehaviour {
                     {
                         mMatchingPanel.SetActive(false);
                     }
+                    break;
+                case State.ClientReady:
+
                     break;
                 default:
                     break;
