@@ -128,6 +128,10 @@ public class TeamPanel : MonoBehaviour {
             Debug.Log("이름 변경 = " + name);
             targetTr.GetComponent<Text>().text = name;
         }
+        else
+        {
+            Debug.Log(ConstValue.ProtocolCharacterTagIndexImage[(int)tagIndex] + " 이름의 tag를 찾지 못함");
+        }
     }
 
 }

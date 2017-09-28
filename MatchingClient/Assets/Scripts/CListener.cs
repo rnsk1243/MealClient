@@ -26,18 +26,23 @@ public class CListener {
         mThreadListen = new Thread(new ThreadStart(Listen));
         Debug.Log("listen 시작");
         mThreadListen.Start();
+        //mThreadListen.Join();
     }
 
     ~CListener()
     {
         Debug.Log("CListener 소멸자 호출");
-        mThreadListen.Abort();
+        //mThreadListen.Abort();
     }
 
     public void TerminaterThread()
     {
-        Debug.Log("mThreadListen 종료 호출");
-        mThreadListen.Abort();
+        Debug.Log("TerminaterThread 호출");
+        if (mThreadListen.IsAlive)
+        {
+            Debug.Log("mThreadListen 강제 종료 호출");
+            mThreadListen.Abort();
+        }
     }
 
     public static CListener GetInstance()
@@ -79,8 +84,10 @@ public class CListener {
             {
                 if(!mNetWork.IsConnected())
                 {
-                    Debug.Log("연결 끊김 Listen스레드 종료중..");
-                    mThreadListen.Abort();
+                    Debug.Log("연결 끊김 Listen함수 종료..");
+                    //mThreadListen.Abort();
+                    //TerminaterThread();
+                    return;
                 }
 
                 byte[] dataBuffer = new byte[ConstValue.BufSizeRecv];
@@ -111,8 +118,9 @@ public class CListener {
             catch (Exception e)
             {
                 Debug.Log(e.Message);
-                Debug.Log("Listen스레드 종료중..");
-                mThreadListen.Abort();
+                Debug.Log("에러 리슨함수 종료..");
+                return;
+                //mThreadListen.Abort();
             }
         }
     }
@@ -129,6 +137,7 @@ public class CListener {
                 {
                     case (int)ProtocolDetail.ImageChange:
                     case (int)ProtocolDetail.NameChange:
+                        Debug.Log("dataPacket.InfoTagNumber = " + dataPacket.InfoTagNumber);
                         mRecvMatchInfoQueue.Enqueue(new DataMatchInfo((ProtocolDetail)dataPacket.InfoProtocolDetail, (ProtocolCharacterTagIndex)dataPacket.InfoTagNumber, dataPacket.InfoValue));
                         break;
                     case (int)ProtocolDetail.MatchingSuccess:

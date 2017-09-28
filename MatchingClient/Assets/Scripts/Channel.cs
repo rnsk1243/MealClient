@@ -23,7 +23,7 @@ public class Channel : MonoBehaviour {
     {
         Debug.Log("매칭 중...");
         CheckState.ChangeState(State.ClientMatching);
-        DataPacketInfo dataEnterRoom = new DataPacketInfo((int)ProtocolInfo.ServerCommend, (int)ProtocolDetail.EnterRoom, (int)State.ClientMatching, null);
+        DataPacketInfo dataEnterRoom = new DataPacketInfo((int)ProtocolInfo.ServerCommend, (int)ProtocolDetail.EnterRoom, (int)ProtocolChannelMenuTag.MatchingStart, null);
         mSender.Sendn(ref dataEnterRoom);
     }
 
@@ -31,6 +31,8 @@ public class Channel : MonoBehaviour {
     {
         Debug.Log("매칭 취소.");
         CheckState.ChangeState(State.ClientChannelMenu);
+        DataPacketInfo dataOutRoom = new DataPacketInfo((int)ProtocolInfo.ServerCommend, (int)ProtocolDetail.OutRoom, (int)ProtocolChannelMenuTag.MatchingCancel, null);
+        mSender.Sendn(ref dataOutRoom);
     }
 
 }

@@ -17,7 +17,6 @@ public class Chatting : MonoBehaviour {
     GameObject mViewPort;
     RectTransform mRectTransform;
     Text mText;
-
     List<String> DialogueRecord;
 
     int mLimitDialogueWindow;  // 몇줄까지 나타내는지 
@@ -28,16 +27,16 @@ public class Chatting : MonoBehaviour {
         mListener = CListener.GetInstance();
         mInputFieldObj = GameObject.FindGameObjectWithTag("TextInput");
         mViewPort = GameObject.FindGameObjectWithTag(ConstValue.ProtocolMessageTag[(int)ProtocolMessageTag.Text]);
-        
         mInputComponent = mInputFieldObj.GetComponent<InputField>();
         mInputComponent.text = "";
-        mRectTransform = mViewPort.GetComponent<RectTransform>();
-        mRectTransform.position.Set(0, 0, 0);
+        mInputComponent.characterLimit = ConstValue.CharacterLimit;
         mText = mViewPort.GetComponent<Text>();
-        mRectTransform.sizeDelta = new Vector2(0, 2200);
-        Debug.Log("mRectTransform.sizeDelta.y = " + mRectTransform.sizeDelta.y);
+        //Debug.Log("mRectTransform.sizeDelta.y = " + mRectTransform.sizeDelta.y);
+        mRectTransform = mViewPort.GetComponent<RectTransform>();
         mLimitDialogueWindow = (int)(mRectTransform.sizeDelta.y / 30);
-        Debug.Log("mLimitDialogueWindow = " + mLimitDialogueWindow);
+        //Debug.Log("mLimitDialogueWindow = " + mLimitDialogueWindow);
+        mRectTransform.anchoredPosition = new Vector2(0, 0);
+        mRectTransform.sizeDelta = new Vector2(0, 2200);
         DialogueRecordInit();
     }
 	
@@ -46,7 +45,6 @@ public class Chatting : MonoBehaviour {
         DialogueRecord = new List<string>();
         for (int i=0; i< mLimitDialogueWindow; ++i)
         {
-            Debug.Log("d");
             DialogueRecord.Add(" ");
         }
     }
@@ -75,6 +73,7 @@ public class Chatting : MonoBehaviour {
         string message = mInputComponent.text;
         if(message != null && message != "")
         {
+            
             DataPacketInfo dataString = new DataPacketInfo((int)ProtocolInfo.ChattingMessage, (int)ProtocolDetail.Message, (int)ProtocolMessageTag.Text, message);
             //DrawText(message, new Vector2(0, 0));
             //Debug.Log("보낸 메세지 = " + message);
@@ -85,9 +84,10 @@ public class Chatting : MonoBehaviour {
         }
     }
 
-    void AddDialogue(string message)
+    public void AddDialogue(string message)
     {
-        if(DialogueRecord.Count >= mLimitDialogueWindow)
+        mRectTransform.anchoredPosition = new Vector2(0, 0);
+        if (DialogueRecord.Count >= mLimitDialogueWindow)
         {
             //ebug.Log("꽉참 지울 문장 = " + DialogueRecord[0]);
             DialogueRecord.RemoveAt(0);
