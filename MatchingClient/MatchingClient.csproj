@@ -81,18 +81,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\CListener.cs" />
-    <Compile Include="Assets\Scripts\CReadyNetWork.cs" />
-    <Compile Include="Assets\Scripts\CSender.cs" />
-    <Compile Include="Assets\Scripts\ChangeCharacter.cs" />
-    <Compile Include="Assets\Scripts\Channel.cs" />
-    <Compile Include="Assets\Scripts\Chatting.cs" />
-    <Compile Include="Assets\Scripts\CheckState.cs" />
-    <Compile Include="Assets\Scripts\ConstValueInfo.cs" />
-    <Compile Include="Assets\Scripts\Front.cs" />
-    <Compile Include="Assets\Scripts\Init.cs" />
-    <Compile Include="Assets\Scripts\StructData.cs" />
-    <Compile Include="Assets\Scripts\TeamPanel.cs" />
+    <Compile Include="Assets\Scripts\ChannelScene\Mono_Script\Channel.cs" />
+    <Compile Include="Assets\Scripts\Everywhere\CP_Script\ConnectReady\CReadyNetWork.cs" />
+    <Compile Include="Assets\Scripts\Everywhere\CP_Script\TransportData\CListener.cs" />
+    <Compile Include="Assets\Scripts\Everywhere\CP_Script\TransportData\CSender.cs" />
+    <Compile Include="Assets\Scripts\Everywhere\CP_Script\TransportData\ConstValueInfo.cs" />
+    <Compile Include="Assets\Scripts\Everywhere\CP_Script\TransportData\StructData.cs" />
+    <Compile Include="Assets\Scripts\Everywhere\Mono_Script\BackExit.cs" />
+    <Compile Include="Assets\Scripts\Everywhere\Mono_Script\CheckState.cs" />
+    <Compile Include="Assets\Scripts\Everywhere\Mono_Script\Start\Init.cs" />
+    <Compile Include="Assets\Scripts\FrontScene\Mono_Script\Front.cs" />
+    <Compile Include="Assets\Scripts\RoomScene\Mono_Script\ChangeCharacter.cs" />
+    <Compile Include="Assets\Scripts\RoomScene\Mono_Script\Chatting.cs" />
+    <Compile Include="Assets\Scripts\RoomScene\Mono_Script\TeamPanel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="GenerateTargetFrameworkMonikerAttribute" />
