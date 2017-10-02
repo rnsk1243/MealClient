@@ -20,7 +20,7 @@ public class CSender
     {
         if(null == mInstance)
         {
-            Debug.Log("Sender 객체 생성");
+//            Debug.Log("Sender 객체 생성");
             mInstance = new CSender();
         }
         return mInstance;

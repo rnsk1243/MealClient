@@ -21,18 +21,26 @@ public class Channel : MonoBehaviour {
 
     public void RequestMatching()
     {
-        Debug.Log("매칭 요청");
-        DataPacketInfo dataEnterRoom = new DataPacketInfo((int)ProtocolInfo.ServerCommend, (int)ProtocolDetail.EnterRoom, (int)ProtocolChannelMenuTag.MatchingStart, null);
-        mSender.Sendn(ref dataEnterRoom);
-        CheckState.ChangeState(State.ClientRequestMatching);
+        State curState = CheckState.GetCurState();
+        if (State.ClientRequestMatching != curState)
+        {
+ //           Debug.Log("매칭 요청");
+            DataPacketInfo dataEnterRoom = new DataPacketInfo((int)ProtocolInfo.ServerCommend, (int)ProtocolDetail.EnterRoom, (int)ProtocolChannelMenuTag.MatchingStart, null);
+            mSender.Sendn(ref dataEnterRoom);
+            CheckState.ChangeState(State.ClientRequestMatching);
+        }
     }
 
     public void CancleMatching()
     {
-        Debug.Log("매칭 취소.");
-        DataPacketInfo dataOutRoom = new DataPacketInfo((int)ProtocolInfo.ServerCommend, (int)ProtocolDetail.OutRoom, (int)ProtocolChannelMenuTag.MatchingCancel, null);
-        mSender.Sendn(ref dataOutRoom);
-        CheckState.ChangeState(State.ClientRequestCancleMactching);
+        State curState = CheckState.GetCurState();
+        if (State.ClientRequestCancleMactching != curState)
+        {
+ //           Debug.Log("매칭 취소.");
+            DataPacketInfo dataOutRoom = new DataPacketInfo((int)ProtocolInfo.ServerCommend, (int)ProtocolDetail.OutRoom, (int)ProtocolChannelMenuTag.MatchingCancel, null);
+            mSender.Sendn(ref dataOutRoom);
+            CheckState.ChangeState(State.ClientRequestCancleMactching);
+        }
     }
 
 }

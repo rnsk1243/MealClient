@@ -98,7 +98,7 @@ public class CReadyNetWork
     }
     ~CReadyNetWork()
     {
-        UnityEngine.Debug.Log("CReadyNetWork 소멸자 호출");
+//        UnityEngine.Debug.Log("CReadyNetWork 소멸자 호출");
         mStream.Close();
         mClient.Close();
     }
@@ -123,13 +123,13 @@ public class CReadyNetWork
 
     public void CloseStream()
     {
-        UnityEngine.Debug.Log("mStream Close() 호출");
+ //       UnityEngine.Debug.Log("mStream Close() 호출");
         mStream.Close();
     }
 
     public void CloseClient()
     {
-        UnityEngine.Debug.Log("mClient Close() 호출");
+ //       UnityEngine.Debug.Log("mClient Close() 호출");
         mClient.Close();
     }
 

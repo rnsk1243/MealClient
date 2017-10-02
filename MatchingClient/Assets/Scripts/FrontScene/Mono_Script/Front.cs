@@ -40,13 +40,14 @@ public class Front : MonoBehaviour {
         if ((id != null && id != "") && (pw != null && pw != ""))
         {
             string idpw = id + '/' + pw;
-            Debug.Log("idpw = " + idpw);
+//            Debug.Log("idpw = " + idpw);
             DataPacketInfo dataIDPWString = new DataPacketInfo((int)ProtocolInfo.ServerCommend, (int)ProtocolDetail.FrontMenu, (int)ProtocolFrontMenuTag.LoginMenu, idpw);
             mSender.Sendn(ref dataIDPWString);
+            mInputPWComponent.text = "";
         }
         else
         {
-            Debug.Log("아이디 혹은 비밀번호를 입력해 주세요.");
+ //           Debug.Log("아이디 혹은 비밀번호를 입력해 주세요.");
         }
     }
 }

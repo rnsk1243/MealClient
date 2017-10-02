@@ -23,7 +23,7 @@ public class ChangeCharacter : MonoBehaviour {
 
     public void SelectMandu()
     {
-        Debug.Log("만두선택");
+//        Debug.Log("만두선택");
         SelectCharacter(ProtocolCharacterImageNameIndex.Mandu);
     }
 
@@ -50,13 +50,14 @@ public class ChangeCharacter : MonoBehaviour {
         DataPacketInfo dataInfo = new DataPacketInfo((int)ProtocolInfo.ServerCommend, protocolDetail, 0, null);
         mSender.Sendn(ref dataInfo);
         
-        Debug.Log("ReadyButton누름");
+   //     Debug.Log("ReadyButton누름");
     }
 
     void SelectCharacter(ProtocolCharacterImageNameIndex characterIndex)
     {
-        Debug.Log("내 상태 = " + CheckState.GetCurState());
-        if(State.ClientNotReady == CheckState.GetCurState())
+        //Debug.Log("내 상태 = " + CheckState.GetCurState());
+        State curState = CheckState.GetCurState();
+        if (State.ClientNotReady == curState && State.ClientRequestCharacterChange != curState)
         {
             DataPacketInfo dataInfo = new DataPacketInfo((int)ProtocolInfo.ServerCommend, (int)ProtocolDetail.ChangeCharacter, (int)characterIndex, null);
             mSender.Sendn(ref dataInfo);
@@ -66,7 +67,7 @@ public class ChangeCharacter : MonoBehaviour {
         {
             if(null == ChatScript)
             {
-                Debug.Log("ChatScript가 null임");
+ //               Debug.Log("ChatScript가 null임");
                 return;
             }
             ChatScript.AddDialogue(ConstValue.NoticeReadyNoChangeCharacter);

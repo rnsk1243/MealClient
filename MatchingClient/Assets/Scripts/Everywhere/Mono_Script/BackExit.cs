@@ -16,17 +16,31 @@ public class BackExit : MonoBehaviour {
 
     public void ExitButton()
     {
-        Debug.Log("뒤로가기 버튼 클릭 / 상태에 따른 씬변경 요청");
-        
-        if(CheckState.GetCurState() != State.ClientReady)
+//        Debug.Log("뒤로가기 버튼 클릭 / 상태에 따른 씬변경 요청");
+        State curState = CheckState.GetCurState();
+        DataPacketInfo dataInfo = new DataPacketInfo();
+        if (curState != State.ClientReady && curState != State.ClientRequestBackExit)
         {
-            Debug.Log("나가기 요청 함");
-
+            switch(curState)
+            {
+                case State.ClientNotReady:
+                    dataInfo = new DataPacketInfo((int)ProtocolInfo.ServerCommend, (int)ProtocolDetail.OutRoom, (int)State.ClientRequestBackExit, null);
+                    break;
+                case State.ClientMakeRoom:
+                    break;
+                case State.ClientChannelMenu:
+                    break;
+                default:
+                    break;
+            }
+            mSender.Sendn(ref dataInfo);
+            CheckState.ChangeState(State.ClientRequestBackExit);
+ //           Debug.Log("나가기 요청 함");
         }else
         {
             if (null == ChatScript)
             {
-                Debug.Log("ChatScript가 null임");
+//                Debug.Log("ChatScript가 null임");
                 return;
             }
             ChatScript.AddDialogue(ConstValue.NoticeReadyNoBackExit);

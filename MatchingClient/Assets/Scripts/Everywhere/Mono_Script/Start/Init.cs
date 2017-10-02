@@ -12,7 +12,7 @@ public class Init : MonoBehaviour {
 
     void Awake () {
         DontDestroyOnLoad(this.gameObject);
-        Debug.Log("Init시작");
+//        Debug.Log("Init시작");
         readyNetWork = CReadyNetWork.GetInstance();
         listener = CListener.GetInstance();
         sender = CSender.GetInstance();

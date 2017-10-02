@@ -24,23 +24,23 @@ public class CListener {
         mNetWork = CReadyNetWork.GetInstance();
         mStream = mNetWork.GetStream();
         mThreadListen = new Thread(new ThreadStart(Listen));
-        Debug.Log("listen 시작");
+//        Debug.Log("listen 시작");
         mThreadListen.Start();
         //mThreadListen.Join();
     }
 
     ~CListener()
     {
-        Debug.Log("CListener 소멸자 호출");
+  //      Debug.Log("CListener 소멸자 호출");
         //mThreadListen.Abort();
     }
 
     public void TerminaterThread()
     {
-        Debug.Log("TerminaterThread 호출");
+ //       Debug.Log("TerminaterThread 호출");
         if (mThreadListen.IsAlive)
         {
-            Debug.Log("mThreadListen 강제 종료 호출");
+ //           Debug.Log("mThreadListen 강제 종료 호출");
             mThreadListen.Abort();
         }
     }
@@ -49,7 +49,7 @@ public class CListener {
     {
         if(null == mInstance)
         {
-            Debug.Log("Listener 객체 생성");
+ //           Debug.Log("Listener 객체 생성");
             mInstance = new CListener();
         }
         return mInstance;
@@ -68,7 +68,7 @@ public class CListener {
     {
         if(0 != mRecvMatchInfoQueue.Count)
         {
-            Debug.Log("플레이어 정보 꺼냄");
+//            Debug.Log("플레이어 정보 꺼냄");
             return mRecvMatchInfoQueue.Dequeue();
         }
         return null;
@@ -141,22 +141,17 @@ public class CListener {
                 {
                     case (int)ProtocolDetail.ImageChange:
                     case (int)ProtocolDetail.NameChange:
-                        CheckState.ChangeState(State.ClientNotReady);
-                        Debug.Log("dataPacket.InfoTagNumber = " + dataPacket.InfoTagNumber);
+                    case (int)ProtocolDetail.RemovePanel:
+                        //CheckState.ChangeState(State.ClientNotReady);
                         mRecvMatchInfoQueue.Enqueue(new DataMatchInfo((ProtocolDetail)dataPacket.InfoProtocolDetail, (ProtocolCharacterTagIndex)dataPacket.InfoTagNumber, dataPacket.InfoValue));
-                        break;
-                    case (int)ProtocolDetail.MatchingSuccess:
-                        CheckState.ChangeSceneState(ProtocolSceneName.RoomScene);
-                        //CheckState.ChangeState(State.ClientRoomIn);
-                        break;
-                    case (int)ProtocolDetail.LoginSuccess:
-                        CheckState.ChangeSceneState(ProtocolSceneName.ChannelScene);
-                        //CheckState.ChangeState(State.ClientChannelMenu);// 채널 메뉴
                         break;
                     default:
                         Debug.Log("분류 할 수 없는 enum InfoProtocolDetail에 등록 되어 있지 않음");
                         break;
                 }
+                break;
+            case (int)ProtocolInfo.SceneChange:
+                CheckState.ChangeSceneState((ProtocolSceneName)dataPacket.InfoTagNumber);
                 break;
             default:
                 Debug.Log("분류 할 수 없는 enum ProtocolInfo에 등록 되어 있지 않음");

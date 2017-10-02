@@ -17,7 +17,8 @@ namespace ConstValueInfo
         ServerCommend,      // 서버에게 명령
         ChattingMessage,    // 채팅 메세지
         ClientCommend,       // 클라이언트 명령
-        RequestResult       // 요청 결과
+        RequestResult,       // 요청 결과
+        SceneChange         // 씬 변경
         //PlayerInfo          // 플레이어 정보( 캐릭터, 이름 )
     }
 
@@ -33,14 +34,13 @@ namespace ConstValueInfo
         OutRoom,
         SetReadyGame,           // 게임준비
         FrontMenu,          // 메뉴(로그인, 회원가입, 게스트 로그인 )
-        MatchingSuccess,     // 매칭 성공 방 UI 표시
-        LoginSuccess,         // 로그인 성공 채널 입장
         ChangeCharacter,      // 캐릭터 변경
         NotReadyGame,        // 게임 준비 취소
         StartGame,
         GetHostIP,
         SuccessRequest,       // 요청 성공
-        FailRequest
+        FailRequest,
+        RemovePanel             // 나간 사람 패널 지우기
     }
 
 
@@ -90,7 +90,8 @@ namespace ConstValueInfo
         ClientRequestGaemNotReady, ClientNotReady/*룸에서의 기본 상태*/, // 1001추가됨
         ClientRequestMatching, ClientMatching,
         ClientRequestCancleMactching, /*채널 기본*/
-        ClientRequestCharacterChange /*룸기본*/
+        ClientRequestCharacterChange, /*룸기본*/
+        ClientRequestBackExit /*씬 기본*/
     }
 
     //enum ProtocolTeam
@@ -114,7 +115,8 @@ namespace ConstValueInfo
         public static readonly string[] ProtocolMessageTag = { "TextView" };
         public static readonly string[] ProtocolSceneName = { "FrontScene", "ChannelScene", "RoomScene", "Main" };
         public const int CharacterKind = 3;
-        public const string NoticeReadyNoChangeCharacter = "준비 상태이므로 캐릭터를 변경할 수 없습니다. 먼저 준비를 풀어주세요.";
-        public const string NoticeReadyNoBackExit = "준비 상태이므로 방을 나갈 수 없습니다. 먼저 준비를 풀어주세요.";
+        public const string NoticeReadyNoChangeCharacter = "이미 요청중이거나 준비 상태이므로 캐릭터를 변경할 수 없습니다. 먼저 준비를 풀어주세요.";
+        public const string NoticeReadyNoBackExit = "이미 요청중이거나 준비 상태이므로 방을 나갈 수 없습니다. 먼저 준비를 풀어주세요.";
+        public const string NoticeNotReadyState = "변화가 발생하여 준비가 풀렸습니다. 다시 준비 해주세요.";
     }
 }

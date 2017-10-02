@@ -9,11 +9,6 @@ public class CheckState : MonoBehaviour {
 
     static ProtocolSceneName mCurrentSceneState;
     static State mCurrentState;
-    //static GameObject[] mLoginStatePanels;
-    //static GameObject[] mLoginStateScripts;
-
-    //static GameObject[] mRoomStatePanels;
-    //static GameObject[] mRoomStateScripts;
     static GameObject mChannelPanel;   // ChannelScene
     static GameObject mMatchingPanel;   // ChannelScene
     static bool mIsSceneChangeStart;    // Scene 변경 예정
@@ -30,6 +25,7 @@ public class CheckState : MonoBehaviour {
 
     public static void ChangeSceneState(ProtocolSceneName state)
     {
+        Debug.Log("씬변경 = " + state);
         mCurrentSceneState = state;
         mIsSceneChangeStart = true;
         //ActiveObject(state);
@@ -90,7 +86,12 @@ public class CheckState : MonoBehaviour {
                     Debug.Log("Ready 성공");
                     break;
                 case State.ClientNotReady:
-                    Debug.Log("NotReady 성공");
+                    Chatting ChatScript;
+                    ChatScript = GameObject.FindGameObjectWithTag("ChatPanel").GetComponent<Chatting>();
+                    if (null != ChatScript)
+                    {
+                        ChatScript.AddDialogue(ConstValue.NoticeNotReadyState);
+                    }                    
                     break;
                 default:
                     break;
@@ -105,52 +106,4 @@ public class CheckState : MonoBehaviour {
             mIsSceneChanged = true;
         }
     }
-
-
-
-    //static void ActiveObject(State curState)
-    //{
-    //    switch (curState)
-    //    {
-    //        case State.Login:
-    //            foreach (GameObject g in mLoginStatePanels)
-    //            {
-    //                g.SetActive(true);
-    //            }
-    //            foreach (GameObject g in mLoginStateScripts)
-    //            {
-    //                g.SetActive(true);
-    //            }
-    //            foreach (GameObject g in mRoomStateScripts)
-    //            {
-    //                g.SetActive(false);
-    //            }
-    //            foreach (GameObject g in mRoomStatePanels)
-    //            {
-    //                g.SetActive(false);
-    //            }
-    //            break;
-    //        case State.Join:
-    //            break;
-    //        case State.Room:
-    //            foreach (GameObject g in mRoomStatePanels)
-    //            {
-    //                g.SetActive(true);
-    //            }
-    //            foreach (GameObject g in mRoomStateScripts)
-    //            {
-    //                g.SetActive(true);
-    //            }
-    //            foreach (GameObject g in mLoginStateScripts)
-    //            {
-    //                g.SetActive(false);
-    //            }
-    //            foreach (GameObject g in mLoginStatePanels)
-    //            {
-    //                g.SetActive(false);
-    //            }
-    //            break;
-    //    }
-    //}
-
 }

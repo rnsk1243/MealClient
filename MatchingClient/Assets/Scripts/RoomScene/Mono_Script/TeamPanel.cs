@@ -60,6 +60,9 @@ public class TeamPanel : MonoBehaviour {
                 case ProtocolDetail.NameChange:
                     UpdateName(dataInfo.DataTagNumber, dataInfo.DataValue);
                     break;
+                case ProtocolDetail.RemovePanel:
+                    UpdateRemove(dataInfo.DataTagNumber);
+                    break;
                 default:
                     Debug.Log("이상한거 받음 = dataInfo.DataInfo = " + dataInfo.DataInfo + "// dataInfo.DataTagNumber = " + dataInfo.DataTagNumber + " // dataInfo.DataValue = " + dataInfo.DataValue);
                     break;
@@ -104,13 +107,11 @@ public class TeamPanel : MonoBehaviour {
             {   // 서버에서 받은 캐릭터이미지(imageProtocol)와 프로토콜 이름(name)이 일치하고 배열 범위를 벗어나지 않으면 
                 if (imageProtocol == name && ((mCharacterTextureArray.Length - 1) >= index))
                 {
-                    Debug.Log("이미지 변경 = " + imageProtocol);
                     targetTr.GetComponent<RawImage>().texture = mCharacterTextureArray[index];
                     return true;
                 }
                 ++index;
             }
-            Debug.Log("전부 일치 하지 않음");
         }
         else
         {
@@ -134,4 +135,18 @@ public class TeamPanel : MonoBehaviour {
         }
     }
 
+    void UpdateRemove(ProtocolCharacterTagIndex tagIndex)
+    {
+        Transform targetTrName = SearchTargetPlayerName(ConstValue.ProtocolCharacterTagIndexName[(int)tagIndex]);
+        Transform targetTrImage = SearchTargetPlayerImage(ConstValue.ProtocolCharacterTagIndexImage[(int)tagIndex]);
+        if (targetTrName != null && targetTrImage != null)
+        {
+            targetTrName.GetComponent<Text>().text = "";
+            targetTrImage.GetComponent<RawImage>().texture = null;
+        }
+        else
+        {
+            Debug.Log(ConstValue.ProtocolCharacterTagIndexImage[(int)tagIndex] + " 이름의 tag를 찾지 못함");
+        }
+    }
 }
