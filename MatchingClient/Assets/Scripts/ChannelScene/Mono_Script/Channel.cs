@@ -24,10 +24,9 @@ public class Channel : MonoBehaviour {
         State curState = CheckState.GetCurState();
         if (State.ClientRequestMatching != curState)
         {
- //           Debug.Log("매칭 요청");
+            CheckState.ChangeState(State.ClientRequestMatching);
             DataPacketInfo dataEnterRoom = new DataPacketInfo((int)ProtocolInfo.ServerCommend, (int)ProtocolDetail.EnterRoom, (int)ProtocolChannelMenuTag.MatchingStart, null);
             mSender.Sendn(ref dataEnterRoom);
-            CheckState.ChangeState(State.ClientRequestMatching);
         }
     }
 
@@ -36,10 +35,9 @@ public class Channel : MonoBehaviour {
         State curState = CheckState.GetCurState();
         if (State.ClientRequestCancleMactching != curState)
         {
- //           Debug.Log("매칭 취소.");
+            CheckState.ChangeState(State.ClientRequestCancleMactching);
             DataPacketInfo dataOutRoom = new DataPacketInfo((int)ProtocolInfo.ServerCommend, (int)ProtocolDetail.OutRoom, (int)ProtocolChannelMenuTag.MatchingCancel, null);
             mSender.Sendn(ref dataOutRoom);
-            CheckState.ChangeState(State.ClientRequestCancleMactching);
         }
     }
 

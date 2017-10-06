@@ -20,7 +20,7 @@ public class Chatting : MonoBehaviour {
     List<String> DialogueRecord;
 
     int mLimitDialogueWindow;  // 몇줄까지 나타내는지 
-
+    string my;
     void Awake ()
     {
         mSender = CSender.GetInstance();
@@ -38,6 +38,7 @@ public class Chatting : MonoBehaviour {
         mRectTransform.anchoredPosition = new Vector2(0, 0);
         mRectTransform.sizeDelta = new Vector2(0, 2200);
         DialogueRecordInit();
+        my = "나 : ";
     }
 	
     void DialogueRecordInit()
@@ -78,7 +79,8 @@ public class Chatting : MonoBehaviour {
             //DrawText(message, new Vector2(0, 0));
             //Debug.Log("보낸 메세지 = " + message);
             mSender.Sendn(ref dataString);
-            AddDialogue(message);
+            string addStr = (my + message);
+            AddDialogue(addStr);
             mInputComponent.text = "";
             mInputComponent.ActivateInputField(); // 활성화 유지
         }

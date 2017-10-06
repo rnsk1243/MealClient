@@ -11,6 +11,9 @@ public class CheckState : MonoBehaviour {
     static State mCurrentState;
     static GameObject mChannelPanel;   // ChannelScene
     static GameObject mMatchingPanel;   // ChannelScene
+    static GameObject mFront;
+    //static GameObject mSelectLoginPanel;     // FrontScene
+    //static GameObject mSelectPanel;          // FrontScene
     static bool mIsSceneChangeStart;    // Scene 변경 예정
     static bool mIsSceneChanged;        // Scene 변경 완료
     static bool mIsStateChanged;
@@ -21,6 +24,7 @@ public class CheckState : MonoBehaviour {
         mIsSceneChangeStart = false;
         mIsSceneChanged = false;
         mIsStateChanged = false;
+        ChangeState(State.ClientFrontMenu);
     }
 
     public static void ChangeSceneState(ProtocolSceneName state)
@@ -74,13 +78,22 @@ public class CheckState : MonoBehaviour {
             Debug.Log("상태 변경되어 할 작업 mCurrentState = " + mCurrentState);
             switch (mCurrentState)
             {
+                case State.ClientFrontMenu: // Scene전환시 호출 기본
+                    FrontInit(true, false, false);
+                    break;
+                case State.ClientLogin:
+                    FrontInit(false, false, true);
+                    break;
+                case State.ClientGuest:
+                    FrontInit(false, true, false);
+                    break;
+                case State.ClientRequestMatching:
+                    break;
                 case State.ClientMatching:
-                    mMatchingPanel.SetActive(true);
+                    ChannelInit(true);
                     break;
                 case State.ClientChannelMenu:
-                    mChannelPanel = GameObject.FindGameObjectWithTag("LoginSuccessPanel");
-                    mMatchingPanel = mChannelPanel.GetComponentInChildren<Transform>().FindChild("MatchingPanel").gameObject;
-                    mMatchingPanel.SetActive(false);
+                    ChannelInit(false);
                     break;
                 case State.ClientReady:
                     Debug.Log("Ready 성공");
@@ -106,4 +119,24 @@ public class CheckState : MonoBehaviour {
             mIsSceneChanged = true;
         }
     }
+
+    void FrontInit(bool select, bool guest, bool login)
+    {
+        mFront = GameObject.FindGameObjectWithTag("TagFront");
+        GameObject selectLoginPanel = mFront.GetComponentInChildren<Transform>().FindChild("SelectLoginPanel").gameObject;
+        GameObject guestPanel = mFront.GetComponentInChildren<Transform>().FindChild("GuestPanel").gameObject;
+        GameObject loginPanel = mFront.GetComponentInChildren<Transform>().FindChild("LoginPanel").gameObject;
+
+        selectLoginPanel.SetActive(select);
+        guestPanel.SetActive(guest);
+        loginPanel.SetActive(login);
+    }
+
+    void ChannelInit(bool matching)
+    {
+        mChannelPanel = GameObject.FindGameObjectWithTag("LoginSuccessPanel");
+        mMatchingPanel = mChannelPanel.GetComponentInChildren<Transform>().FindChild("MatchingPanel").gameObject;
+        mMatchingPanel.SetActive(matching);
+    }
+
 }

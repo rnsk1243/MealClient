@@ -82,7 +82,8 @@ namespace ConstValueInfo
 
     public enum State
     {
-        ClientNone, ClientFrontMenu/*front씬에서의 기본 상태*/, ClientJoin,
+        ClientNone, ClientFrontMenu/*front씬에서의 기본 상태*/,
+        ClientLogin/*login을 선택한 상태*/, ClientJoin/*회원가입을 선택한 상태*/, ClientGuest/*guest 로그인 상태*/,
         ClientChannelMenu/*채널씬에서의 기본 상태*/,
         ClientMakeRoom, ClientOption, 
         ClientGame,/*0926추가됨*/
@@ -107,7 +108,7 @@ namespace ConstValueInfo
         public const int BufSizeSend = 1024;
         //public const int BufSizeTag = 64;  // 오브젝트 Tag값
         public const int BufSizeValue = 128; // 채팅 메세지, 혹은 값
-        public const int CharacterLimit = 60; // 채팅 InputField 글자수 제한
+        public const int CharacterLimit = 40; // 채팅 InputField 글자수 제한
         public const int IntSize = 4;
         public static readonly string[] ProtocolCharacterImageName = { "Tofu", "Mandu", "Tangsuyuk" };
         public static readonly string[] ProtocolCharacterTagIndexImage = { "NoneCharacter", "RedImage01", "BlueImage01", "RedImage02", "BlueImage02", "RedImage03", "BlueImage03" };
