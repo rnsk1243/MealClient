@@ -20,24 +20,25 @@ public class Front : MonoBehaviour {
 
     // Use this for initialization
     void Awake () {
-        Debug.Log("Front Awake!");
         mSender = CSender.GetInstance();
         mListener = CListener.GetInstance();
         mInputID = GameObject.FindGameObjectWithTag("InputIDTag");
         mInputPW = GameObject.FindGameObjectWithTag("InputPWTag");
         mInputGuestID = GameObject.FindGameObjectWithTag("TagInputGuestID");
         mInputIDComponent = mInputID.GetComponent<InputField>();
+        mInputIDComponent.characterLimit = ConstValue.CharacterLimitID;
         mInputIDComponent.text = "";
         mInputPWComponent = mInputPW.GetComponent<InputField>();
         mInputPWComponent.text = "";
+        mInputPWComponent.characterLimit = ConstValue.CharacterLimitPW;
         mInputGuestIDComponent = mInputGuestID.GetComponent<InputField>();
         mInputGuestIDComponent.text = "";
+        mInputGuestIDComponent.characterLimit = ConstValue.CharacterLimitGuestName;
     }
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+    }
 
     public void SendID_PW()
     {
@@ -46,8 +47,10 @@ public class Front : MonoBehaviour {
 
         if ((id != null && id != "") && (pw != null && pw != ""))
         {
+            id = id.Replace(" ", "");
+            pw = pw.Replace(" ", "");
             string idpw = id + '/' + pw;
-//          Debug.Log("idpw = " + idpw);
+            //          Debug.Log("idpw = " + idpw);
             DataPacketInfo dataIDPWString = new DataPacketInfo((int)ProtocolInfo.ServerCommend, (int)ProtocolDetail.FrontMenu, (int)ProtocolFrontMenuTag.LoginMenu, idpw);
             mSender.Sendn(ref dataIDPWString);
             mInputPWComponent.text = "";
@@ -82,6 +85,8 @@ public class Front : MonoBehaviour {
         if (id != null && id != "")
         {
             Debug.Log("id = " + id);
+            id = id.Replace(" ", "");
+            mInputIDComponent.text = id;
             DataPacketInfo dataIDPWString = new DataPacketInfo((int)ProtocolInfo.ServerCommend, (int)ProtocolDetail.FrontMenu, (int)ProtocolFrontMenuTag.GuestMenu, id);
             mSender.Sendn(ref dataIDPWString);
             mInputGuestIDComponent.text = "";

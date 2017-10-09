@@ -41,4 +41,15 @@ public class Channel : MonoBehaviour {
         }
     }
 
+    public void MakeRoomButton()
+    {
+        State curState = CheckState.GetCurState();
+        if(State.ClientChannelMenu == curState)
+        {
+            CheckState.ChangeState(State.ClientMakeRoom);
+        }
+    }
+
+
+
 }

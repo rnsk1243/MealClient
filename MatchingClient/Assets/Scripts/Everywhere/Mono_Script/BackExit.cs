@@ -6,12 +6,11 @@ using ConstValueInfo;
 public class BackExit : MonoBehaviour {
 
     CSender mSender;
-    Chatting ChatScript;
+    
 
     void Awake()
     {
         mSender = CSender.GetInstance();
-        ChatScript = GameObject.FindGameObjectWithTag("ChatPanel").GetComponent<Chatting>();
     }
 
     public void ExitButton()
@@ -26,10 +25,6 @@ public class BackExit : MonoBehaviour {
                 case State.ClientNotReady:
                     dataInfo = new DataPacketInfo((int)ProtocolInfo.ServerCommend, (int)ProtocolDetail.OutRoom, (int)State.ClientRequestBackExit, null);
                     break;
-                case State.ClientMakeRoom:
-                    break;
-                case State.ClientChannelMenu:
-                    break;
                 default:
                     break;
             }
@@ -38,12 +33,12 @@ public class BackExit : MonoBehaviour {
  //           Debug.Log("나가기 요청 함");
         }else
         {
-            if (null == ChatScript)
+            if (CheckState.GetCurScene() == ProtocolSceneName.RoomScene)
             {
-//                Debug.Log("ChatScript가 null임");
+                Chatting ChatScript = GameObject.FindGameObjectWithTag("ChatPanel").GetComponent<Chatting>();
+                ChatScript.AddDialogue(ConstValue.NoticeReadyNoBackExit);
                 return;
             }
-            ChatScript.AddDialogue(ConstValue.NoticeReadyNoBackExit);
         }
 
         //CheckState.ChangeState(State.ClientChannelMenu);

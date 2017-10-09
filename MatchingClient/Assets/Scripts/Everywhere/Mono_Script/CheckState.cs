@@ -9,8 +9,7 @@ public class CheckState : MonoBehaviour {
 
     static ProtocolSceneName mCurrentSceneState;
     static State mCurrentState;
-    static GameObject mChannelPanel;   // ChannelScene
-    static GameObject mMatchingPanel;   // ChannelScene
+    static GameObject mChannelMasterPanel;
     static GameObject mFront;
     //static GameObject mSelectLoginPanel;     // FrontScene
     //static GameObject mSelectPanel;          // FrontScene
@@ -48,6 +47,11 @@ public class CheckState : MonoBehaviour {
         return mCurrentState;
     }
 
+    public static ProtocolSceneName GetCurScene()
+    {
+        return mCurrentSceneState;
+    }
+
     void Update()
     {
         if(mIsSceneChanged) // 씬이 바뀌고 난 후 처음 해주는 일 (한번만 함)
@@ -60,6 +64,7 @@ public class CheckState : MonoBehaviour {
                     //mLoginStateScripts = GameObject.FindGameObjectsWithTag("LoginScript");
                     break;
                 case ProtocolSceneName.ChannelScene:
+                    mChannelMasterPanel = GameObject.FindGameObjectWithTag("TagChannelMaster");
                     ChangeState(State.ClientChannelMenu);// 채널 메뉴
                     break;
                 case ProtocolSceneName.RoomScene:
@@ -90,10 +95,13 @@ public class CheckState : MonoBehaviour {
                 case State.ClientRequestMatching:
                     break;
                 case State.ClientMatching:
-                    ChannelInit(true);
+                    ChannelInit(true, false);
                     break;
                 case State.ClientChannelMenu:
-                    ChannelInit(false);
+                    ChannelInit(false, false);
+                    break;
+                case State.ClientMakeRoom:
+                    ChannelInit(false, true);
                     break;
                 case State.ClientReady:
                     Debug.Log("Ready 성공");
@@ -132,11 +140,13 @@ public class CheckState : MonoBehaviour {
         loginPanel.SetActive(login);
     }
 
-    void ChannelInit(bool matching)
+    void ChannelInit(bool matching, bool makeRoom)
     {
-        mChannelPanel = GameObject.FindGameObjectWithTag("LoginSuccessPanel");
-        mMatchingPanel = mChannelPanel.GetComponentInChildren<Transform>().FindChild("MatchingPanel").gameObject;
-        mMatchingPanel.SetActive(matching);
+        GameObject matchingPanel = mChannelMasterPanel.GetComponentInChildren<Transform>().FindChild("MatchingPanel").gameObject;
+        matchingPanel.SetActive(matching);
+
+        GameObject makeRoomPanel = mChannelMasterPanel.GetComponentInChildren<Transform>().FindChild("MakeRoomPanel").gameObject;
+        makeRoomPanel.SetActive(makeRoom);
     }
 
 }

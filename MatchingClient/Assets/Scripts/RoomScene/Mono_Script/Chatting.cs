@@ -29,8 +29,8 @@ public class Chatting : MonoBehaviour {
         mViewPort = GameObject.FindGameObjectWithTag(ConstValue.ProtocolMessageTag[(int)ProtocolMessageTag.Text]);
         mInputComponent = mInputFieldObj.GetComponent<InputField>();
         mInputComponent.text = "";
-        mInputComponent.characterLimit = ConstValue.CharacterLimit;
-        mText = mViewPort.GetComponent<Text>();
+        mInputComponent.characterLimit = ConstValue.CharacterLimitChatting;
+        mText = mViewPort.GetComponent<Text>(); 
         //Debug.Log("mRectTransform.sizeDelta.y = " + mRectTransform.sizeDelta.y);
         mRectTransform = mViewPort.GetComponent<RectTransform>();
         mLimitDialogueWindow = (int)(mRectTransform.sizeDelta.y / 30);

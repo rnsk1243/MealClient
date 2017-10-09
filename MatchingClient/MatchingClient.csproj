@@ -82,6 +82,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\ChannelScene\Mono_Script\Channel.cs" />
+    <Compile Include="Assets\Scripts\ChannelScene\Mono_Script\MakeRoomPanel.cs" />
     <Compile Include="Assets\Scripts\Everywhere\CP_Script\ConnectReady\CReadyNetWork.cs" />
     <Compile Include="Assets\Scripts\Everywhere\CP_Script\TransportData\CListener.cs" />
     <Compile Include="Assets\Scripts\Everywhere\CP_Script\TransportData\CSender.cs" />
