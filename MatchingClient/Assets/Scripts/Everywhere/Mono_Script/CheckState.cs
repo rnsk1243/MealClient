@@ -48,6 +48,11 @@ public class CheckState : MonoBehaviour {
         return mCurrentState;
     }
 
+    public static ProtocolSceneName GetCurScene()
+    {
+        return mCurrentSceneState;
+    }
+
     void Update()
     {
         if(mIsSceneChanged) // 씬이 바뀌고 난 후 처음 해주는 일 (한번만 함)
@@ -61,6 +66,9 @@ public class CheckState : MonoBehaviour {
                     break;
                 case ProtocolSceneName.ChannelScene:
                     ChangeState(State.ClientChannelMenu);// 채널 메뉴
+                    break;
+                case ProtocolSceneName.RoomMakeScene:
+                    ChangeState(State.ClientMakeRoom);// 방 만들기 씬
                     break;
                 case ProtocolSceneName.RoomScene:
                     ChangeState(State.ClientNotReady);
@@ -94,6 +102,9 @@ public class CheckState : MonoBehaviour {
                     break;
                 case State.ClientChannelMenu:
                     ChannelInit(false);
+                    break;
+                case State.ClientMakeRoom:
+
                     break;
                 case State.ClientReady:
                     Debug.Log("Ready 성공");

@@ -26,20 +26,22 @@ namespace ConstValueInfo
     {
         NoneDetail,               // 초기화 값
         Message,            // 메세지
-        ImageChange,              // 플레이어 캐릭터 이미지 변경
-        NameChange,               // 이름 변경
+        ImageChange,              // 이미지
+        NameChange,               // 이름
         EnterRoom,
+        EnterSpecialRoom,
         EnterChanel,
         MakeRoom,
         OutRoom,
+        OutMakeRoom,
         SetReadyGame,           // 게임준비
-        FrontMenu,          // 메뉴(로그인, 회원가입, 게스트 로그인 )
-        ChangeCharacter,      // 캐릭터 변경
-        NotReadyGame,        // 게임 준비 취소
+        FrontMenu,              // 메뉴(로그인, 회원가입, 게스트 로그인 )
+        ChangeCharacter,        // 캐릭터 변경
+        NotReadyGame,           // 게임 준비 취소
         StartGame,
         GetHostIP,
         SuccessRequest,       // 요청 성공
-        FailRequest,
+        FailRequest,            // 요청 실패
         RemovePanel             // 나간 사람 패널 지우기
     }
 
@@ -77,8 +79,14 @@ namespace ConstValueInfo
 
     public enum ProtocolSceneName
     {
-        FrontScene, ChannelScene, RoomScene, MainScene
+        FrontScene, ChannelScene, RoomMakeScene, RoomScene, MainScene
     }
+
+    public enum ProtocolTeamAmount
+    {
+        OneTeam, TwoTeam, ThreeTeam
+    };
+
 
     public enum State
     {
@@ -92,7 +100,8 @@ namespace ConstValueInfo
         ClientRequestMatching, ClientMatching,
         ClientRequestCancleMactching, /*채널 기본*/
         ClientRequestCharacterChange, /*룸기본*/
-        ClientRequestBackExit /*씬 기본*/
+        ClientRequestBackExit, /*씬 기본*/
+        ClientRequestMakeRoom /*룸기본*/
     }
 
     //enum ProtocolTeam
@@ -108,7 +117,10 @@ namespace ConstValueInfo
         public const int BufSizeSend = 1024;
         //public const int BufSizeTag = 64;  // 오브젝트 Tag값
         public const int BufSizeValue = 128; // 채팅 메세지, 혹은 값
-        public const int CharacterLimit = 40; // 채팅 InputField 글자수 제한
+        public const int CharacterLimitChatting = 40; // 채팅 InputField 글자수 제한
+        public const int CharacterLimitID = 8; //  로그인 id 글자수 제한
+        public const int CharacterLimitPW = 15; // 로그인 pw 글자수 제한
+        public const int CharacterLimitGuestName = CharacterLimitID; // Guest로그인 name 글자수 제한
         public const int IntSize = 4;
         public static readonly string[] ProtocolCharacterImageName = { "Tofu", "Mandu", "Tangsuyuk" };
         public static readonly string[] ProtocolCharacterTagIndexImage = { "NoneCharacter", "RedImage01", "BlueImage01", "RedImage02", "BlueImage02", "RedImage03", "BlueImage03" };
@@ -119,5 +131,6 @@ namespace ConstValueInfo
         public const string NoticeReadyNoChangeCharacter = "이미 요청중이거나 준비 상태이므로 캐릭터를 변경할 수 없습니다. 먼저 준비를 풀어주세요.";
         public const string NoticeReadyNoBackExit = "이미 요청중이거나 준비 상태이므로 방을 나갈 수 없습니다. 먼저 준비를 풀어주세요.";
         public const string NoticeNotReadyState = "변화가 발생하여 준비가 풀렸습니다. 다시 준비 해주세요.";
+        public const string RoomPWNone = "None";
     }
 }

@@ -41,4 +41,14 @@ public class Channel : MonoBehaviour {
         }
     }
 
+    public void MoveMakeRoomScene()
+    {
+        State curState = CheckState.GetCurState();
+        if(State.ClientChannelMenu == curState)
+        {
+            DataPacketInfo dataOutRoom = new DataPacketInfo((int)ProtocolInfo.SceneChange, (int)ProtocolDetail.NoneDetail, (int)ProtocolSceneName.RoomMakeScene, null);
+            mSender.Sendn(ref dataOutRoom);
+        }
+    }
+
 }
