@@ -68,6 +68,9 @@ public class CheckState : MonoBehaviour {
                     mChannelMasterPanel = GameObject.FindGameObjectWithTag("TagChannelMaster");
                     ChangeState(State.ClientChannelMenu);// 채널 메뉴
                     break;
+                case ProtocolSceneName.RoomMakeScene:
+                    ChangeState(State.ClientMakeRoom);// 방 만들기 씬
+                    break;
                 case ProtocolSceneName.RoomScene:
                     ChangeState(State.ClientNotReady);
                     //mRoomStatePanels = GameObject.FindGameObjectsWithTag("RoomPanel");
@@ -109,6 +112,9 @@ public class CheckState : MonoBehaviour {
                     break;
                 case State.ClientFailEnterRoom:
                     ChannelInit(false, false, true, true);
+                    break;
+                case State.ClientMakeRoom:
+
                     break;
                 case State.ClientReady:
                     Debug.Log("Ready 성공");

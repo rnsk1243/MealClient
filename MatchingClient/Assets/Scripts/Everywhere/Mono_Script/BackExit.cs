@@ -25,6 +25,14 @@ public class BackExit : MonoBehaviour {
                 case State.ClientNotReady:
                     dataInfo = new DataPacketInfo((int)ProtocolInfo.ServerCommend, (int)ProtocolDetail.OutRoom, (int)State.ClientRequestBackExit, null);
                     break;
+<<<<<<< HEAD
+=======
+                case State.ClientMakeRoom:
+                    dataInfo = new DataPacketInfo((int)ProtocolInfo.ServerCommend, (int)ProtocolDetail.OutMakeRoom, (int)State.ClientRequestBackExit, null);
+                    break;
+                case State.ClientChannelMenu:
+                    break;
+>>>>>>> origin/WOOHEE
                 default:
                     break;
             }

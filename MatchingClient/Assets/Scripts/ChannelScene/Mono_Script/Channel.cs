@@ -41,11 +41,16 @@ public class Channel : MonoBehaviour {
         }
     }
 
+<<<<<<< HEAD
     public void MakeRoomButton()
+=======
+    public void MoveMakeRoomScene()
+>>>>>>> origin/WOOHEE
     {
         State curState = CheckState.GetCurState();
         if(State.ClientChannelMenu == curState)
         {
+<<<<<<< HEAD
             CheckState.ChangeState(State.ClientMakeRoom);
         }
     }
@@ -56,6 +61,10 @@ public class Channel : MonoBehaviour {
         if (State.ClientChannelMenu == curState)
         {
             CheckState.ChangeState(State.ClientEnterSpecialRoom);
+=======
+            DataPacketInfo dataOutRoom = new DataPacketInfo((int)ProtocolInfo.SceneChange, (int)ProtocolDetail.NoneDetail, (int)ProtocolSceneName.RoomMakeScene, null);
+            mSender.Sendn(ref dataOutRoom);
+>>>>>>> origin/WOOHEE
         }
     }
 
