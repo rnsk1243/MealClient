@@ -22,7 +22,7 @@ public class Channel : MonoBehaviour {
     public void RequestMatching()
     {
         State curState = CheckState.GetCurState();
-        if (State.ClientRequestMatching != curState)
+        if (State.ClientChannelMenu == curState)
         {
             CheckState.ChangeState(State.ClientRequestMatching);
             DataPacketInfo dataEnterRoom = new DataPacketInfo((int)ProtocolInfo.ServerCommend, (int)ProtocolDetail.EnterRoom, (int)ProtocolChannelMenuTag.MatchingStart, null);
@@ -50,6 +50,13 @@ public class Channel : MonoBehaviour {
         }
     }
 
-
+    public void EnterRoomButton()
+    {
+        State curState = CheckState.GetCurState();
+        if (State.ClientChannelMenu == curState)
+        {
+            CheckState.ChangeState(State.ClientEnterSpecialRoom);
+        }
+    }
 
 }

@@ -101,7 +101,9 @@ namespace ConstValueInfo
         ClientRequestCancleMactching, /*채널 기본*/
         ClientRequestCharacterChange, /*룸기본*/
         ClientRequestBackExit, /*씬 기본*/
-        ClientRequestMakeRoom /*룸기본*/
+        ClientRequestMakeRoom, /*룸기본*/
+        ClientEnterSpecialRoom, // 방입장 버튼 누른 상태
+        ClientRequestSpecialEnterRoom, ClientFailEnterRoom // room 입장 실패
     }
 
     //enum ProtocolTeam
@@ -120,6 +122,7 @@ namespace ConstValueInfo
         public const int CharacterLimitChatting = 40; // 채팅 InputField 글자수 제한
         public const int CharacterLimitID = 8; //  로그인 id 글자수 제한
         public const int CharacterLimitPW = 15; // 로그인 pw 글자수 제한
+        public const int CharacterLimitRoomNumber = 4; // 방입장 요청 방번호 글자수 제한
         public const int CharacterLimitGuestName = CharacterLimitID; // Guest로그인 name 글자수 제한
         public const int IntSize = 4;
         public static readonly string[] ProtocolCharacterImageName = { "Tofu", "Mandu", "Tangsuyuk" };

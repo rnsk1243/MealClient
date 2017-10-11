@@ -59,6 +59,7 @@ public class CheckState : MonoBehaviour {
             switch (mCurrentSceneState)
             {
                 case ProtocolSceneName.FrontScene:
+                    mFront = GameObject.FindGameObjectWithTag("TagFront");
                     ChangeState(State.ClientFrontMenu);
                     //mLoginStatePanels = GameObject.FindGameObjectsWithTag("LoginPanel");
                     //mLoginStateScripts = GameObject.FindGameObjectsWithTag("LoginScript");
@@ -95,13 +96,19 @@ public class CheckState : MonoBehaviour {
                 case State.ClientRequestMatching:
                     break;
                 case State.ClientMatching:
-                    ChannelInit(true, false);
+                    ChannelInit(true, false, false, false);
                     break;
                 case State.ClientChannelMenu:
-                    ChannelInit(false, false);
+                    ChannelInit(false, false, false, false);
                     break;
                 case State.ClientMakeRoom:
-                    ChannelInit(false, true);
+                    ChannelInit(false, true, false, false);
+                    break;
+                case State.ClientEnterSpecialRoom:
+                    ChannelInit(false, false, true, false);
+                    break;
+                case State.ClientFailEnterRoom:
+                    ChannelInit(false, false, true, true);
                     break;
                 case State.ClientReady:
                     Debug.Log("Ready 성공");
@@ -130,7 +137,10 @@ public class CheckState : MonoBehaviour {
 
     void FrontInit(bool select, bool guest, bool login)
     {
-        mFront = GameObject.FindGameObjectWithTag("TagFront");
+        if(mFront == null)
+        {
+            mFront = GameObject.FindGameObjectWithTag("TagFront");
+        }
         GameObject selectLoginPanel = mFront.GetComponentInChildren<Transform>().FindChild("SelectLoginPanel").gameObject;
         GameObject guestPanel = mFront.GetComponentInChildren<Transform>().FindChild("GuestPanel").gameObject;
         GameObject loginPanel = mFront.GetComponentInChildren<Transform>().FindChild("LoginPanel").gameObject;
@@ -140,13 +150,20 @@ public class CheckState : MonoBehaviour {
         loginPanel.SetActive(login);
     }
 
-    void ChannelInit(bool matching, bool makeRoom)
+    void ChannelInit(bool matching, bool makeRoom, bool enterRoom, bool failRoom)
     {
+        if(mChannelMasterPanel == null)
+        {
+            mChannelMasterPanel = GameObject.FindGameObjectWithTag("TagChannelMaster");
+        }
         GameObject matchingPanel = mChannelMasterPanel.GetComponentInChildren<Transform>().FindChild("MatchingPanel").gameObject;
         matchingPanel.SetActive(matching);
-
         GameObject makeRoomPanel = mChannelMasterPanel.GetComponentInChildren<Transform>().FindChild("MakeRoomPanel").gameObject;
         makeRoomPanel.SetActive(makeRoom);
+        GameObject enterRoomPanel = mChannelMasterPanel.GetComponentInChildren<Transform>().FindChild("EnterRoomPanel").gameObject;
+        enterRoomPanel.SetActive(enterRoom);
+        GameObject failRoomPanel = mChannelMasterPanel.GetComponentInChildren<Transform>().FindChild("EnterRoomFailPopPanel").gameObject;
+        failRoomPanel.SetActive(failRoom);
     }
 
 }
