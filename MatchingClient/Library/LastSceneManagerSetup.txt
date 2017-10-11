@@ -1,0 +1,8 @@
+sceneSetups:
+<<<<<<< HEAD
+- path: Assets/Scenes/FrontScene.unity
+=======
+- path: Assets/Scenes/MakeRoomScene.unity
+>>>>>>> origin/WOOHEE
+  isLoaded: 1
+  isActive: 1

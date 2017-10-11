@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 12d28719675bf6e4a8b9960fec7e040c
+timeCreated: 1506364690
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - mTofu: {fileID: 2800000, guid: dc01237f5fb2775419fc225ec46b8d58, type: 3}
+  - mMandu: {fileID: 2800000, guid: e2ce145276d48284f8154cf7fa96b92a, type: 3}
+  - mTangsuyuk: {fileID: 2800000, guid: ffc7d3d39525f0945b52731db96fa550, type: 3}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
