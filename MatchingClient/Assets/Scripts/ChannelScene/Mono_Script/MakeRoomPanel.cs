@@ -67,13 +67,13 @@ public class MakeRoomPanel : MonoBehaviour {
         State curState = CheckState.GetCurState();
         if (State.ClientRequestMakeRoom != curState)
         {
-            Debug.Log("MakeRoom 요청");
+           // Debug.Log("MakeRoom 요청");
             if (false == mSelectPublicToggle.GetComponent<Toggle>().isOn)
             {
                 string pw = mInputRoomPWComponent.text;
                 if (pw == "" || pw == null)
                 {
-                    Debug.Log("방 비번 없음");
+                   // Debug.Log("방 비번 없음");
                     return;
                 }
                 pw = pw.Replace(" ", "");
