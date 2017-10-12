@@ -18,7 +18,8 @@ namespace ConstValueInfo
         ChattingMessage,    // 채팅 메세지
         ClientCommend,       // 클라이언트 명령
         RequestResult,       // 요청 결과
-        SceneChange         // 씬 변경
+        SceneChange,         // 씬 변경
+        ExitGameProcess
         //PlayerInfo          // 플레이어 정보( 캐릭터, 이름 )
     }
 
@@ -42,7 +43,9 @@ namespace ConstValueInfo
         GetHostIP,
         SuccessRequest,       // 요청 성공
         FailRequest,            // 요청 실패
-        RemovePanel             // 나간 사람 패널 지우기
+        RemovePanel,             // 나간 사람 패널 지우기
+        MyInfoImage,                 // 내정보
+        MyInfoName
     }
 
 
@@ -134,6 +137,8 @@ namespace ConstValueInfo
         public const string NoticeReadyNoChangeCharacter = "이미 요청중이거나 준비 상태이므로 캐릭터를 변경할 수 없습니다. 먼저 준비를 풀어주세요.";
         public const string NoticeReadyNoBackExit = "이미 요청중이거나 준비 상태이므로 방을 나갈 수 없습니다. 먼저 준비를 풀어주세요.";
         public const string NoticeNotReadyState = "변화가 발생하여 준비가 풀렸습니다. 다시 준비 해주세요.";
+        public static readonly string[] InfoPWText = { "공개방 상태이기 때문에 입력하실 수 없습니다.", "영어,숫자 15글자" };
         public const string RoomPWNone = "None";
+        public const int WrongValue = -1;
     }
 }

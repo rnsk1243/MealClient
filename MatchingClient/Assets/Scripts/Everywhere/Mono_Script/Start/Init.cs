@@ -24,7 +24,7 @@ public class Init : MonoBehaviour {
 
     private void OnApplicationQuit()
     {
-        //DataPacketInfo quitInfo = new DataPacketInfo((int)ProtocolInfo.ChattingMessage, (int)ProtocolDetail.Message, (int)ProtocolMessageTag.Text, "으악 나 죽네");
+        //DataPacketInfo quitInfo = new DataPacketInfo((int)ProtocolInfo.ExitGameProcess, (int)ProtocolDetail.Message, (int)ProtocolMessageTag.Text, "으악 나 죽네");
         //sender.Sendn(ref quitInfo);
         //Debug.Log("OnApplicationQuit 호출");
         readyNetWork.CloseStream();

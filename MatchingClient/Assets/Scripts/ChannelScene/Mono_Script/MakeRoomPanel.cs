@@ -14,7 +14,11 @@ public class MakeRoomPanel : MonoBehaviour {
     Toggle mOneTeamToggle;
     Toggle mTwoTeamToggle;
     Toggle mThreeTeamToggle;
+    Text mInfoPWText;
+    Button mMakeRoomButton;
     ProtocolTeamAmount mTeamAmount;
+
+    enum PWState { publicRoom, privateRoom }
 
     // Use this for initialization
     void Awake () {
@@ -22,17 +26,50 @@ public class MakeRoomPanel : MonoBehaviour {
         mSender = CSender.GetInstance();
         mInputRoomPW = GameObject.FindGameObjectWithTag("TagInputRoomPW");
         mInputRoomPWComponent = mInputRoomPW.GetComponent<InputField>();
+        mInfoPWText = mInputRoomPW.GetComponentInChildren<Transform>().FindChild("Placeholder").GetComponent<Text>();
+        mMakeRoomButton = GameObject.FindGameObjectWithTag("TagMakeRoomButton").GetComponent<Button>();
         mInputRoomPWComponent.characterLimit = ConstValue.CharacterLimitPW;
         mInputRoomPWComponent.text = "";
         mSelectPublicToggle = GameObject.FindGameObjectWithTag("TagSelectPublicToggle");
         mSelectPublicToggle.GetComponent<Toggle>().isOn = true;
+        mMakeRoomButton.interactable = !mSelectPublicToggle.GetComponent<Toggle>().isOn;
         mInputRoomPWComponent.interactable = !mSelectPublicToggle.GetComponent<Toggle>().isOn;
+        mInfoPWText.text = ConstValue.InfoPWText[(int)PWState.publicRoom]; // 비밀번호 입력란에 공개방 안내
         mSelectTeamToggle = GameObject.FindGameObjectWithTag("TagSelectTeamToggle");
         mOneTeamToggle = mSelectTeamToggle.GetComponentInChildren<Transform>().FindChild("One").gameObject.GetComponent<Toggle>();
         //mTwoTeamToggle = mSelectTeamToggle.GetComponentInChildren<Transform>().FindChild("Two").gameObject.GetComponent<Toggle>();
         //mThreeTeamToggle = mSelectTeamToggle.GetComponentInChildren<Transform>().FindChild("Three").gameObject.GetComponent<Toggle>();
         SelectOneTeam();
         mOneTeamToggle.isOn = true;
+    }
+
+    void Update()
+    {
+        State curState = CheckState.GetCurState();
+        if(State.ClientMakeRoom == curState)
+        {
+            PWState pwState = PWState.publicRoom;
+            bool isMake = false;
+            if(mSelectPublicToggle.GetComponent<Toggle>().isOn)
+            {
+                pwState = PWState.publicRoom;
+                isMake = true;
+            }
+            else
+            {
+                pwState = PWState.privateRoom;
+                string pw = mInputRoomPWComponent.text;
+                if (pw == "" || pw == null)
+                {
+                    isMake = false;
+                }else
+                {
+                    isMake = true;
+                }
+            }
+            mMakeRoomButton.interactable = isMake;
+            mInfoPWText.text = ConstValue.InfoPWText[(int)pwState]; // 비밀번호 입력란에 안내
+        }
     }
 
     public void SetPublicRoom()

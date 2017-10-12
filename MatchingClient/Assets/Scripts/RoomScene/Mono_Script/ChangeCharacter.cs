@@ -49,7 +49,6 @@ public class ChangeCharacter : MonoBehaviour {
         }
         DataPacketInfo dataInfo = new DataPacketInfo((int)ProtocolInfo.ServerCommend, protocolDetail, 0, null);
         mSender.Sendn(ref dataInfo);
-        
    //     Debug.Log("ReadyButton누름");
     }
 

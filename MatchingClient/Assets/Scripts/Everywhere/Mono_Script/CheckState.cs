@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using ConstValueInfo;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.UI;
 
 public class CheckState : MonoBehaviour {
 
@@ -11,6 +11,7 @@ public class CheckState : MonoBehaviour {
     static State mCurrentState;
     static GameObject mChannelMasterPanel;
     static GameObject mFront;
+    static GameObject mMapCharacterPanel;
     //static GameObject mSelectLoginPanel;     // FrontScene
     //static GameObject mSelectPanel;          // FrontScene
     static bool mIsSceneChangeStart;    // Scene 변경 예정
@@ -85,13 +86,10 @@ public class CheckState : MonoBehaviour {
             switch (mCurrentState)
             {
                 case State.ClientFrontMenu: // Scene전환시 호출 기본
-                    FrontInit(true, false, false);
-                    break;
-                case State.ClientLogin:
-                    FrontInit(false, false, true);
+                    FrontInit(true, false);
                     break;
                 case State.ClientGuest:
-                    FrontInit(false, true, false);
+                    FrontInit(false, true);
                     break;
                 case State.ClientRequestMatching:
                     break;
@@ -112,14 +110,16 @@ public class CheckState : MonoBehaviour {
                     break;
                 case State.ClientReady:
                     Debug.Log("Ready 성공");
+                    RoomInit(true);
                     break;
                 case State.ClientNotReady:
                     Chatting ChatScript;
                     ChatScript = GameObject.FindGameObjectWithTag("ChatPanel").GetComponent<Chatting>();
+                    RoomInit(false);
                     if (null != ChatScript)
                     {
                         ChatScript.AddDialogue(ConstValue.NoticeNotReadyState);
-                    }                    
+                    }    
                     break;
                 default:
                     break;
@@ -135,7 +135,7 @@ public class CheckState : MonoBehaviour {
         }
     }
 
-    void FrontInit(bool select, bool guest, bool login)
+    void FrontInit(bool select, bool guest)
     {
         if(mFront == null)
         {
@@ -147,7 +147,7 @@ public class CheckState : MonoBehaviour {
 
         selectLoginPanel.SetActive(select);
         guestPanel.SetActive(guest);
-        loginPanel.SetActive(login);
+        loginPanel.SetActive(false);
     }
 
     void ChannelInit(bool matching, bool makeRoom, bool enterRoom, bool failRoom)
@@ -164,6 +164,22 @@ public class CheckState : MonoBehaviour {
         enterRoomPanel.SetActive(enterRoom);
         GameObject failRoomPanel = mChannelMasterPanel.GetComponentInChildren<Transform>().FindChild("EnterRoomFailPopPanel").gameObject;
         failRoomPanel.SetActive(failRoom);
+    }
+
+    void RoomInit(bool ready)
+    {
+        if(mMapCharacterPanel == null)
+        {
+            mMapCharacterPanel = GameObject.FindGameObjectWithTag("TagMapCharacterPanel");
+        }
+        GameObject buttonTofu = mMapCharacterPanel.GetComponentInChildren<Transform>().FindChild("ButtonTofu").gameObject;
+        GameObject buttonMandu = mMapCharacterPanel.GetComponentInChildren<Transform>().FindChild("ButtonMandu").gameObject;
+        GameObject buttonTangsuyuk = mMapCharacterPanel.GetComponentInChildren<Transform>().FindChild("ButtonTangsuyuk").gameObject;
+        GameObject backButton = GameObject.FindGameObjectWithTag("TagBackButton");
+        buttonTofu.GetComponent<Button>().interactable = !ready;
+        buttonMandu.GetComponent<Button>().interactable = !ready;
+        buttonTangsuyuk.GetComponent<Button>().interactable = !ready;
+        backButton.GetComponent<Button>().interactable = !ready;
     }
 
 }

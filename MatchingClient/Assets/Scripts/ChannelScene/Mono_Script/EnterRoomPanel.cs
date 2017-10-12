@@ -59,6 +59,7 @@ public class EnterRoomPanel : MonoBehaviour {
                     mEnterButtonComponent.interactable = true;
                 }
             }
+
         }
     }
 

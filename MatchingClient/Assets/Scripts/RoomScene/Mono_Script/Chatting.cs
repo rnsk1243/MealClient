@@ -36,7 +36,7 @@ public class Chatting : MonoBehaviour {
         mLimitDialogueWindow = (int)(mRectTransform.sizeDelta.y / 30);
         //Debug.Log("mLimitDialogueWindow = " + mLimitDialogueWindow);
         mRectTransform.anchoredPosition = new Vector2(0, 0);
-        mRectTransform.sizeDelta = new Vector2(0, 2200);
+        mRectTransform.sizeDelta = new Vector2(960, 2200);
         DialogueRecordInit();
         my = "나 : ";
     }

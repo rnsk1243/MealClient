@@ -59,4 +59,9 @@ public class Channel : MonoBehaviour {
         }
     }
 
+    public void ExitButton()
+    {
+        Application.Quit();
+    }
+
 }

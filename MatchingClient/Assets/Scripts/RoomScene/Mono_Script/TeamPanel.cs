@@ -17,12 +17,13 @@ public class TeamPanel : MonoBehaviour {
     List<Transform> mPlayerNameInfoList;
 
     Texture[] mCharacterTextureArray; // 캐릭터 이미지 텍스쳐 보관
-    
+    MyInfoClass mMyInfo;
 
 
     void Awake()
     {
         mListener = CListener.GetInstance();
+        mMyInfo = MyInfoClass.GetInstance();
         mCharacterTextureArray = new Texture[ConstValue.CharacterKind];
         mCharacterTextureArray[(int)ProtocolCharacterImageNameIndex.Tofu] = mTofu;
         mCharacterTextureArray[(int)ProtocolCharacterImageNameIndex.Mandu] = mMandu;
@@ -54,8 +55,14 @@ public class TeamPanel : MonoBehaviour {
         {
             switch (dataInfo.DataInfo)
             {
+                case ProtocolDetail.MyInfoImage:
+                    UpdateImage(dataInfo.DataTagNumber, dataInfo.DataValue, true);
+                    break;
                 case ProtocolDetail.ImageChange:
                     UpdateImage(dataInfo.DataTagNumber, dataInfo.DataValue);
+                    break;
+                case ProtocolDetail.MyInfoName:
+                    UpdateName(dataInfo.DataTagNumber, dataInfo.DataValue, true);
                     break;
                 case ProtocolDetail.NameChange:
                     UpdateName(dataInfo.DataTagNumber, dataInfo.DataValue);
@@ -96,7 +103,7 @@ public class TeamPanel : MonoBehaviour {
         return null;
     }
 
-    bool UpdateImage(ProtocolCharacterTagIndex tagIndex, string imageProtocol)
+    bool UpdateImage(ProtocolCharacterTagIndex tagIndex, string imageProtocol, bool isMy = false)
     {
         Debug.Log("변경 위치 = " + tagIndex);
         Transform targetTr = SearchTargetPlayerImage(ConstValue.ProtocolCharacterTagIndexImage[(int)tagIndex]);
@@ -108,6 +115,11 @@ public class TeamPanel : MonoBehaviour {
                 if (imageProtocol == name && ((mCharacterTextureArray.Length - 1) >= index))
                 {
                     targetTr.GetComponent<RawImage>().texture = mCharacterTextureArray[index];
+                    if(isMy)
+                    {
+                        mMyInfo.MyGameNumb = (int)tagIndex;   // 내 위치 0 == red01 / 1 == blue01 ...
+                        mMyInfo.MyCharNumb = index;           // 내 캐릭터 정보 0 == 두부 / 1 == 만두 // 2 == 탕수육
+                    }
                     return true;
                 }
                 ++index;
@@ -121,12 +133,16 @@ public class TeamPanel : MonoBehaviour {
         return false;
     }
 
-    void UpdateName(ProtocolCharacterTagIndex tagIndex, string name)
+    void UpdateName(ProtocolCharacterTagIndex tagIndex, string name, bool isMy = false)
     {
         Transform targetTr = SearchTargetPlayerName(ConstValue.ProtocolCharacterTagIndexName[(int)tagIndex]);
         if(targetTr != null)
         {
             Debug.Log("이름 변경 = " + name);
+            if(isMy)
+            {
+                mMyInfo.MyName = name;            // 내 이름 저장
+            }
             targetTr.GetComponent<Text>().text = name;
         }
         else

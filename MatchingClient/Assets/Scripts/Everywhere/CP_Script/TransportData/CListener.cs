@@ -140,11 +140,18 @@ public class CListener {
             case (int)ProtocolInfo.ClientCommend:
                 switch(dataPacket.InfoProtocolDetail)
                 {
+                    case (int)ProtocolDetail.MyInfoImage:
+                    case (int)ProtocolDetail.MyInfoName:
                     case (int)ProtocolDetail.ImageChange:
                     case (int)ProtocolDetail.NameChange:
                     case (int)ProtocolDetail.RemovePanel:
                         //CheckState.ChangeState(State.ClientNotReady);
-                        mRecvMatchInfoQueue.Enqueue(new DataMatchInfo((ProtocolDetail)dataPacket.InfoProtocolDetail, (ProtocolCharacterTagIndex)dataPacket.InfoTagNumber, dataPacket.InfoValue));
+                        mRecvMatchInfoQueue.Enqueue
+                            (new DataMatchInfo(
+                                (ProtocolDetail)dataPacket.InfoProtocolDetail, 
+                                (ProtocolCharacterTagIndex)dataPacket.InfoTagNumber, 
+                                dataPacket.InfoValue
+                                ));
                         break;
                     default:
                         Debug.Log("분류 할 수 없는 enum InfoProtocolDetail에 등록 되어 있지 않음");
