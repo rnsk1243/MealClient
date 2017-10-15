@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using ConstValueInfo;
+using UnityEngine.UI;
 
 public class ChangeCharacter : MonoBehaviour {
 
     CSender mSender;
     Chatting ChatScript;
+    
 
     // Use this for initialization
     void Awake () {
         mSender = CSender.GetInstance();
         ChatScript = GameObject.FindGameObjectWithTag("ChatPanel").GetComponent<Chatting>();
-        //CheckState.ChangeState(State.ClientNotReady);
     }
 	
 
@@ -54,24 +55,25 @@ public class ChangeCharacter : MonoBehaviour {
 
     void SelectCharacter(ProtocolCharacterImageNameIndex characterIndex)
     {
-        //Debug.Log("내 상태 = " + CheckState.GetCurState());
+        Debug.Log("캐릭터 선택 내 상태 = " + CheckState.GetCurState());
         State curState = CheckState.GetCurState();
-        if (State.ClientNotReady == curState && State.ClientRequestCharacterChange != curState)
+        if ((State.ClientNotAllReady == curState || curState == State.ClientNotReady) && State.ClientRequestCharacterChange != curState)
         {
             DataPacketInfo dataInfo = new DataPacketInfo((int)ProtocolInfo.ServerCommend, (int)ProtocolDetail.ChangeCharacter, (int)characterIndex, null);
             mSender.Sendn(ref dataInfo);
             CheckState.ChangeState(State.ClientRequestCharacterChange);
         }
-        else
-        {
-            if(null == ChatScript)
-            {
- //               Debug.Log("ChatScript가 null임");
-                return;
-            }
-            ChatScript.AddDialogue(ConstValue.NoticeReadyNoChangeCharacter);
-        }
     }
 
+    public void SelectLockCharacter()
+    {
+        if (null == ChatScript)
+        {
+            Debug.Log("ChatScript가 null임");
+            return;
+        }
+        Debug.Log("SelectLockCharacter");
+        ChatScript.AddDialogue(ConstValue.NoticeReadyNoChangeCharacter);
+    }
 
 }

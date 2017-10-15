@@ -145,6 +145,7 @@ public class CListener {
                     case (int)ProtocolDetail.ImageChange:
                     case (int)ProtocolDetail.NameChange:
                     case (int)ProtocolDetail.RemovePanel:
+                    case (int)ProtocolDetail.ReadyInfo:
                         //CheckState.ChangeState(State.ClientNotReady);
                         mRecvMatchInfoQueue.Enqueue
                             (new DataMatchInfo(
@@ -152,6 +153,9 @@ public class CListener {
                                 (ProtocolCharacterTagIndex)dataPacket.InfoTagNumber, 
                                 dataPacket.InfoValue
                                 ));
+                        break;
+                    case (int)ProtocolDetail.GetHostIP:
+                        MyInfoClass.GetInstance().HostIP = dataPacket.InfoValue;
                         break;
                     default:
                         Debug.Log("분류 할 수 없는 enum InfoProtocolDetail에 등록 되어 있지 않음");

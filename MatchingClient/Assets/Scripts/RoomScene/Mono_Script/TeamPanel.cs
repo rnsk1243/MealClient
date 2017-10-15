@@ -10,12 +10,14 @@ public class TeamPanel : MonoBehaviour {
     public Texture mTofu;
     public Texture mMandu;
     public Texture mTangsuyuk;
+    public Sprite mReady;
+    public Sprite mNotReady;
     CListener mListener;
 
     List<GameObject> mPlayerInfo;
     List<Transform> mPlayerImageInfoList;
     List<Transform> mPlayerNameInfoList;
-
+    List<Transform> mPlayerReadyInfoList;
     Texture[] mCharacterTextureArray; // 캐릭터 이미지 텍스쳐 보관
     MyInfoClass mMyInfo;
 
@@ -31,6 +33,7 @@ public class TeamPanel : MonoBehaviour {
         mPlayerInfo = new List<GameObject>();
         mPlayerImageInfoList = new List<Transform>();
         mPlayerNameInfoList = new List<Transform>();
+        mPlayerReadyInfoList = new List<Transform>();
         foreach (GameObject g in GameObject.FindGameObjectsWithTag("PlayerInfo"))
         {
             mPlayerInfo.Add(g);
@@ -39,6 +42,7 @@ public class TeamPanel : MonoBehaviour {
         {
             mPlayerImageInfoList.Add(g.transform.FindChild("Image"));
             mPlayerNameInfoList.Add(g.transform.FindChild("Name"));
+            mPlayerReadyInfoList.Add(g.transform.FindChild("ReadyImage"));
         }
     }
 
@@ -69,6 +73,9 @@ public class TeamPanel : MonoBehaviour {
                     break;
                 case ProtocolDetail.RemovePanel:
                     UpdateRemove(dataInfo.DataTagNumber);
+                    break;
+                case ProtocolDetail.ReadyInfo:
+                    UpdateReady(dataInfo.DataTagNumber, dataInfo.DataValue);
                     break;
                 default:
                     Debug.Log("이상한거 받음 = dataInfo.DataInfo = " + dataInfo.DataInfo + "// dataInfo.DataTagNumber = " + dataInfo.DataTagNumber + " // dataInfo.DataValue = " + dataInfo.DataValue);
@@ -103,6 +110,19 @@ public class TeamPanel : MonoBehaviour {
         return null;
     }
 
+    Transform SearchTargetPlayerReady(string tag)
+    {
+        foreach (Transform tr in mPlayerReadyInfoList)
+        {
+            if (tag == tr.tag)
+            {
+                return tr;
+            }
+        }
+        Debug.Log("tag = " + tag + " 와 일치하는 Player Ready 객체 못 찾음");
+        return null;
+    }
+
     bool UpdateImage(ProtocolCharacterTagIndex tagIndex, string imageProtocol, bool isMy = false)
     {
         Debug.Log("변경 위치 = " + tagIndex);
@@ -129,7 +149,6 @@ public class TeamPanel : MonoBehaviour {
         {
             Debug.Log(ConstValue.ProtocolCharacterTagIndexImage[(int)tagIndex] + " 이름의 tag를 찾지 못함");
         }
-
         return false;
     }
 
@@ -151,14 +170,44 @@ public class TeamPanel : MonoBehaviour {
         }
     }
 
+    void UpdateReady(ProtocolCharacterTagIndex tagIndex, string isReady)
+    {
+        Transform targetTr = SearchTargetPlayerReady(ConstValue.ProtocolCharacterTagIndexReady[(int)tagIndex]);
+        if (targetTr != null)
+        {
+            if(0 == "Ready".CompareTo(isReady))
+            {
+                targetTr.GetComponent<Image>().sprite = mReady;
+            }
+            else
+            {
+                targetTr.GetComponent<Image>().sprite = mNotReady;
+            }
+        }
+        else
+        {
+            Debug.Log(ConstValue.ProtocolCharacterTagIndexImage[(int)tagIndex] + " 이름의 tag를 찾지 못함");
+        }
+    }
+
+    public void UpdateAllNotReady()
+    {
+        foreach(Transform tr in mPlayerReadyInfoList)
+        {
+            tr.GetComponent<Image>().sprite = mNotReady;
+        }
+    }
+
     void UpdateRemove(ProtocolCharacterTagIndex tagIndex)
     {
         Transform targetTrName = SearchTargetPlayerName(ConstValue.ProtocolCharacterTagIndexName[(int)tagIndex]);
         Transform targetTrImage = SearchTargetPlayerImage(ConstValue.ProtocolCharacterTagIndexImage[(int)tagIndex]);
-        if (targetTrName != null && targetTrImage != null)
+        Transform targetTrReady = SearchTargetPlayerReady(ConstValue.ProtocolCharacterTagIndexReady[(int)tagIndex]);
+        if (targetTrName != null && targetTrImage != null && targetTrReady != null)
         {
             targetTrName.GetComponent<Text>().text = "";
             targetTrImage.GetComponent<RawImage>().texture = null;
+            targetTrReady.GetComponent<Image>().sprite = mNotReady;
         }
         else
         {

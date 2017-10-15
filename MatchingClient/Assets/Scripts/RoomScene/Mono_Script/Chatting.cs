@@ -33,7 +33,7 @@ public class Chatting : MonoBehaviour {
         mText = mViewPort.GetComponent<Text>(); 
         //Debug.Log("mRectTransform.sizeDelta.y = " + mRectTransform.sizeDelta.y);
         mRectTransform = mViewPort.GetComponent<RectTransform>();
-        mLimitDialogueWindow = (int)(mRectTransform.sizeDelta.y / 30);
+        mLimitDialogueWindow = (int)(mRectTransform.sizeDelta.y / 28.5); // 분모가 커질 수록 글자는 위쪽에 출력됨
         //Debug.Log("mLimitDialogueWindow = " + mLimitDialogueWindow);
         mRectTransform.anchoredPosition = new Vector2(0, 0);
         mRectTransform.sizeDelta = new Vector2(960, 2200);

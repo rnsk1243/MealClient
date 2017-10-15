@@ -45,13 +45,20 @@ namespace ConstValueInfo
         FailRequest,            // 요청 실패
         RemovePanel,             // 나간 사람 패널 지우기
         MyInfoImage,                 // 내정보
-        MyInfoName
+        MyInfoName,
+        OutMainGameScene,        // 게임씬에서 룸으로 이동
+        ReadyInfo
     }
 
 
     public enum ProtocolCharacterImageNameIndex
     {
         Tofu, Mandu, Tangsuyuk
+    }
+
+    public enum ProtocolReady
+    {
+        NotReady, Ready
     }
 
     public enum ProtocolTagNull
@@ -85,6 +92,16 @@ namespace ConstValueInfo
         FrontScene, ChannelScene, RoomScene, MainScene
     }
 
+    //public enum ProtocolSceneName
+    //{
+    //    FrontScene, ChannelScene, RoomScene, TestScene
+    //}
+
+    public enum ProtocolRoomSceneObj
+    {
+        Room, ButtonTofu, ButtonMandu, ButtonTangsuyuk, ButtonBack, ButtonReady, ButtonLockCharacter, ButtonLockExit
+    }
+
     public enum ProtocolTeamAmount
     {
         OneTeam, TwoTeam, ThreeTeam
@@ -96,17 +113,18 @@ namespace ConstValueInfo
         ClientNone, ClientFrontMenu/*front씬에서의 기본 상태*/,
         ClientLogin/*login을 선택한 상태*/, ClientJoin/*회원가입을 선택한 상태*/, ClientGuest/*guest 로그인 상태*/,
         ClientChannelMenu/*채널씬에서의 기본 상태*/,
-        ClientMakeRoom, ClientOption, 
+        ClientMakeRoom, ClientOption,
         ClientGame,/*0926추가됨*/
         ClientRequestGaemReady, ClientReady,       // 쌍으로 세트임
-        ClientRequestGaemNotReady, ClientNotReady/*룸에서의 기본 상태*/, // 1001추가됨
+        ClientRequestGaemNotReady, ClientNotReady, ClientNotAllReady,/*룸에서의 기본 상태*/ // 1001추가됨
         ClientRequestMatching, ClientMatching,
         ClientRequestCancleMactching, /*채널 기본*/
         ClientRequestCharacterChange, /*룸기본*/
         ClientRequestBackExit, /*씬 기본*/
-        ClientRequestMakeRoom, /*룸기본*/
+        ClientRequestMakeRoom, /*room만들기 신청 완료*/
         ClientEnterSpecialRoom, // 방입장 버튼 누른 상태
-        ClientRequestSpecialEnterRoom, ClientFailEnterRoom // room 입장 실패
+        ClientRequestSpecialEnterRoom, // 지정방 입장 요청중
+        ClientFailEnterRoom
     }
 
     //enum ProtocolTeam
@@ -131,8 +149,10 @@ namespace ConstValueInfo
         public static readonly string[] ProtocolCharacterImageName = { "Tofu", "Mandu", "Tangsuyuk" };
         public static readonly string[] ProtocolCharacterTagIndexImage = { "RedImage01", "BlueImage01", "RedImage02", "BlueImage02", "RedImage03", "BlueImage03" };
         public static readonly string[] ProtocolCharacterTagIndexName = { "RedName01", "BlueName01", "RedName02", "BlueName02", "RedName03", "BlueName03" };
+        public static readonly string[] ProtocolCharacterTagIndexReady = { "RedReadyImage01", "BlueReadyImage01", "RedReadyImage02", "BlueReadyImage02", "RedReadyImage03", "BlueReadyImage03" };
         public static readonly string[] ProtocolMessageTag = { "TextView" };
         public static readonly string[] ProtocolSceneName = { "FrontScene", "ChannelScene", "RoomScene", "Main" };
+        //public static readonly string[] ProtocolSceneName = { "FrontScene", "ChannelScene", "RoomScene", "TestScene" };
         public const int CharacterKind = 3;
         public const string NoticeReadyNoChangeCharacter = "이미 요청중이거나 준비 상태이므로 캐릭터를 변경할 수 없습니다. 먼저 준비를 풀어주세요.";
         public const string NoticeReadyNoBackExit = "이미 요청중이거나 준비 상태이므로 방을 나갈 수 없습니다. 먼저 준비를 풀어주세요.";

@@ -12,6 +12,13 @@ public class CheckState : MonoBehaviour {
     static GameObject mChannelMasterPanel;
     static GameObject mFront;
     static GameObject mMapCharacterPanel;
+    static GameObject[] mRoomSceneObjs;
+    [SerializeField]
+    Sprite[] mReadyButtonSprite;
+    [SerializeField]
+    Sprite[] mActiveCharacterSprite;
+    [SerializeField]
+    Sprite[] mCharacterSprite;
     //static GameObject mSelectLoginPanel;     // FrontScene
     //static GameObject mSelectPanel;          // FrontScene
     static bool mIsSceneChangeStart;    // Scene 변경 예정
@@ -20,6 +27,7 @@ public class CheckState : MonoBehaviour {
     // Use this for initialization
     void Awake () {
         DontDestroyOnLoad(this.gameObject);
+        mRoomSceneObjs = new GameObject[8];
         mCurrentSceneState = ProtocolSceneName.FrontScene;
         mIsSceneChangeStart = false;
         mIsSceneChanged = false;
@@ -70,9 +78,17 @@ public class CheckState : MonoBehaviour {
                     ChangeState(State.ClientChannelMenu);// 채널 메뉴
                     break;
                 case ProtocolSceneName.RoomScene:
+                    RoomSceneSet();
                     ChangeState(State.ClientNotReady);
                     //mRoomStatePanels = GameObject.FindGameObjectsWithTag("RoomPanel");
                     //mRoomStateScripts = GameObject.FindGameObjectsWithTag("RoomScript");
+                    break;
+                case ProtocolSceneName.MainScene:
+                    Debug.Log("=================");
+                    Debug.Log("MyCharaNum = " + MyInfoClass.GetInstance().MyCharNumb);
+                    Debug.Log("MyGameNumb = " + MyInfoClass.GetInstance().MyGameNumb);
+                    Debug.Log("MyName = " + MyInfoClass.GetInstance().MyName);
+                    Debug.Log("=================");
                     break;
                 default:
                     break;
@@ -121,6 +137,16 @@ public class CheckState : MonoBehaviour {
                         ChatScript.AddDialogue(ConstValue.NoticeNotReadyState);
                     }    
                     break;
+                case State.ClientNotAllReady:
+                    Chatting chatScript;
+                    GameObject.FindGameObjectWithTag("RoomPanel").GetComponent<TeamPanel>().UpdateAllNotReady();
+                    chatScript = GameObject.FindGameObjectWithTag("ChatPanel").GetComponent<Chatting>();
+                    RoomInit(false);
+                    if (null != chatScript)
+                    {
+                        chatScript.AddDialogue(ConstValue.NoticeNotReadyState);
+                    }
+                    break;
                 default:
                     break;
             }
@@ -165,21 +191,58 @@ public class CheckState : MonoBehaviour {
         GameObject failRoomPanel = mChannelMasterPanel.GetComponentInChildren<Transform>().FindChild("EnterRoomFailPopPanel").gameObject;
         failRoomPanel.SetActive(failRoom);
     }
+    // RoomScene의 버튼 가져오기
+    void RoomSceneSet()
+    {
+        Debug.Log("RoomSceneSet 호출");
+        mMapCharacterPanel = GameObject.FindGameObjectWithTag("TagMapCharacterPanel");
+        mRoomSceneObjs[(int)ProtocolRoomSceneObj.Room] = GameObject.FindGameObjectWithTag("TagRoom");
+        mRoomSceneObjs[(int)ProtocolRoomSceneObj.ButtonTofu] = mMapCharacterPanel.GetComponentInChildren<Transform>().FindChild("ButtonTofu").gameObject;
+        mRoomSceneObjs[(int)ProtocolRoomSceneObj.ButtonMandu] = mMapCharacterPanel.GetComponentInChildren<Transform>().FindChild("ButtonMandu").gameObject;
+        mRoomSceneObjs[(int)ProtocolRoomSceneObj.ButtonTangsuyuk] = mMapCharacterPanel.GetComponentInChildren<Transform>().FindChild("ButtonTangsuyuk").gameObject;
+        mRoomSceneObjs[(int)ProtocolRoomSceneObj.ButtonBack] = GameObject.FindGameObjectWithTag("TagBackButton");
+        mRoomSceneObjs[(int)ProtocolRoomSceneObj.ButtonReady] = GameObject.FindGameObjectWithTag("TagRoomReadyButton");
+        mRoomSceneObjs[(int)ProtocolRoomSceneObj.ButtonLockCharacter] = mMapCharacterPanel.GetComponentInChildren<Transform>().FindChild("ButtonLockCharacter").gameObject;
+        mRoomSceneObjs[(int)ProtocolRoomSceneObj.ButtonLockExit] = mRoomSceneObjs[(int)ProtocolRoomSceneObj.Room].GetComponentInChildren<Transform>().FindChild("ButtonLockExit").gameObject;
+    }
 
     void RoomInit(bool ready)
     {
-        if(mMapCharacterPanel == null)
+        for (int i=1; i<5; i++)
         {
-            mMapCharacterPanel = GameObject.FindGameObjectWithTag("TagMapCharacterPanel");
+            mRoomSceneObjs[i].GetComponent<Button>().interactable = !ready;
         }
-        GameObject buttonTofu = mMapCharacterPanel.GetComponentInChildren<Transform>().FindChild("ButtonTofu").gameObject;
-        GameObject buttonMandu = mMapCharacterPanel.GetComponentInChildren<Transform>().FindChild("ButtonMandu").gameObject;
-        GameObject buttonTangsuyuk = mMapCharacterPanel.GetComponentInChildren<Transform>().FindChild("ButtonTangsuyuk").gameObject;
-        GameObject backButton = GameObject.FindGameObjectWithTag("TagBackButton");
-        buttonTofu.GetComponent<Button>().interactable = !ready;
-        buttonMandu.GetComponent<Button>().interactable = !ready;
-        buttonTangsuyuk.GetComponent<Button>().interactable = !ready;
-        backButton.GetComponent<Button>().interactable = !ready;
+        mRoomSceneObjs[(int)ProtocolRoomSceneObj.ButtonLockCharacter].SetActive(ready);
+        mRoomSceneObjs[(int)ProtocolRoomSceneObj.ButtonLockExit].SetActive(ready);
+        if(ready)
+        {
+            mRoomSceneObjs[(int)ProtocolRoomSceneObj.ButtonReady].GetComponent<Image>().sprite = mReadyButtonSprite[(int)ProtocolReady.Ready];
+            
+            switch(MyInfoClass.GetInstance().MyCharNumb)
+            {
+                case (int)ProtocolCharacterImageNameIndex.Tofu:
+                    mRoomSceneObjs[(int)ProtocolRoomSceneObj.ButtonTofu].GetComponent<Image>().sprite = mActiveCharacterSprite[(int)ProtocolCharacterImageNameIndex.Tofu];
+                    mRoomSceneObjs[(int)ProtocolRoomSceneObj.ButtonTofu].GetComponent<Button>().interactable = ready;
+                    break;
+                case (int)ProtocolCharacterImageNameIndex.Mandu:
+                    mRoomSceneObjs[(int)ProtocolRoomSceneObj.ButtonMandu].GetComponent<Image>().sprite = mActiveCharacterSprite[(int)ProtocolCharacterImageNameIndex.Mandu];
+                    mRoomSceneObjs[(int)ProtocolRoomSceneObj.ButtonMandu].GetComponent<Button>().interactable = ready;
+                    break;
+                case (int)ProtocolCharacterImageNameIndex.Tangsuyuk:
+                    mRoomSceneObjs[(int)ProtocolRoomSceneObj.ButtonTangsuyuk].GetComponent<Image>().sprite = mActiveCharacterSprite[(int)ProtocolCharacterImageNameIndex.Tangsuyuk];
+                    mRoomSceneObjs[(int)ProtocolRoomSceneObj.ButtonTangsuyuk].GetComponent<Button>().interactable = ready;
+                    break;
+            }
+            Debug.Log("MyInfoClass.GetInstance().MyCharNumb = " + MyInfoClass.GetInstance().MyCharNumb);
+        }
+        else
+        {
+            mRoomSceneObjs[(int)ProtocolRoomSceneObj.ButtonTofu].GetComponent<Image>().sprite = mCharacterSprite[(int)ProtocolCharacterImageNameIndex.Tofu];
+            mRoomSceneObjs[(int)ProtocolRoomSceneObj.ButtonMandu].GetComponent<Image>().sprite = mCharacterSprite[(int)ProtocolCharacterImageNameIndex.Mandu];
+            mRoomSceneObjs[(int)ProtocolRoomSceneObj.ButtonTangsuyuk].GetComponent<Image>().sprite = mCharacterSprite[(int)ProtocolCharacterImageNameIndex.Tangsuyuk];
+            mRoomSceneObjs[(int)ProtocolRoomSceneObj.ButtonReady].GetComponent<Image>().sprite = mReadyButtonSprite[(int)ProtocolReady.NotReady];
+        }
+        
     }
 
 }

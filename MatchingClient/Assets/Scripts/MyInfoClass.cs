@@ -9,6 +9,7 @@ public class MyInfoClass
 
     public int MyCharNumb = ConstValue.WrongValue;
     public int MyGameNumb = ConstValue.WrongValue;
+    public string HostIP = null;
     public string MyName = null;
     public int PlayerLimit = 6;
     //public NetworkMgr MyNetwork;

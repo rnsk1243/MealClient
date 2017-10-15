@@ -93,6 +93,7 @@
     <Compile Include="Assets\Scripts\Everywhere\Mono_Script\CheckState.cs" />
     <Compile Include="Assets\Scripts\Everywhere\Mono_Script\Start\Init.cs" />
     <Compile Include="Assets\Scripts\FrontScene\Mono_Script\Front.cs" />
+    <Compile Include="Assets\Scripts\MainScene.cs" />
     <Compile Include="Assets\Scripts\MyInfoClass.cs" />
     <Compile Include="Assets\Scripts\RoomScene\Mono_Script\ChangeCharacter.cs" />
     <Compile Include="Assets\Scripts\RoomScene\Mono_Script\Chatting.cs" />

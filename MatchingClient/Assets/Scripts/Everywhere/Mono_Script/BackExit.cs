@@ -31,19 +31,22 @@ public class BackExit : MonoBehaviour {
             mSender.Sendn(ref dataInfo);
             CheckState.ChangeState(State.ClientRequestBackExit);
  //           Debug.Log("나가기 요청 함");
-        }else
-        {
-            if (CheckState.GetCurScene() == ProtocolSceneName.RoomScene)
-            {
-                Chatting ChatScript = GameObject.FindGameObjectWithTag("ChatPanel").GetComponent<Chatting>();
-                ChatScript.AddDialogue(ConstValue.NoticeReadyNoBackExit);
-                return;
-            }
         }
+
 
         //CheckState.ChangeState(State.ClientChannelMenu);
         //DataPacketInfo dataOutRoom = new DataPacketInfo((int)ProtocolInfo.ServerCommend, (int)ProtocolDetail.OutRoom, (int)ProtocolChannelMenuTag.MatchingCancel, null);
         //mSender.Sendn(ref dataOutRoom);
+    }
+
+    public void ExitLockButton()
+    {
+        if (CheckState.GetCurScene() == ProtocolSceneName.RoomScene)
+        {
+            Chatting ChatScript = GameObject.FindGameObjectWithTag("ChatPanel").GetComponent<Chatting>();
+            ChatScript.AddDialogue(ConstValue.NoticeReadyNoBackExit);
+            return;
+        }
     }
 
 }
